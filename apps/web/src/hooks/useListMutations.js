@@ -1,5 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
+/**
+ * Provides mutations for lists and items: create list, delete list, toggle item, delete item, and share list.
+ */
 export function useListMutations(activeTab, setActiveTab) {
   const queryClient = useQueryClient();
 
@@ -10,10 +13,11 @@ export function useListMutations(activeTab, setActiveTab) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newList),
       });
+      if (!res.ok) throw new Error("Failed to create list");
       return res.json();
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(["lists"]);
+      queryClient.invalidateQueries({ queryKey: ["lists"] });
     },
   });
 
@@ -23,7 +27,7 @@ export function useListMutations(activeTab, setActiveTab) {
       return id;
     },
     onSuccess: (deletedId) => {
-      queryClient.invalidateQueries(["lists"]);
+      queryClient.invalidateQueries({ queryKey: ["lists"] });
       if (activeTab === String(deletedId)) setActiveTab("chat");
     },
   });
@@ -38,7 +42,7 @@ export function useListMutations(activeTab, setActiveTab) {
       return res.json();
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(["items", activeTab]);
+      queryClient.invalidateQueries({ queryKey: ["items", activeTab] });
     },
   });
 
@@ -51,7 +55,7 @@ export function useListMutations(activeTab, setActiveTab) {
       });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(["items", activeTab]);
+      queryClient.invalidateQueries({ queryKey: ["items", activeTab] });
     },
   });
 

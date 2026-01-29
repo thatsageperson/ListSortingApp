@@ -3,6 +3,7 @@ import {
   List,
   Plus,
   Settings,
+  Home,
   HelpCircle,
   X,
   BrainCircuit,
@@ -12,6 +13,9 @@ import {
 } from "lucide-react";
 import { SidebarItem } from "./SidebarItem";
 
+/**
+ * Left sidebar: branding, dark mode toggle, new list button, chat/list nav, and settings/sign out.
+ */
 export function Sidebar({
   sidebarOpen,
   setSidebarOpen,
@@ -30,12 +34,15 @@ export function Sidebar({
     >
       <div className="p-6 pt-8 flex flex-col h-full">
         <div className="flex items-center justify-between mb-8">
-          <div className="flex items-center">
+          <button
+            onClick={() => { setActiveTab("chat"); setSidebarOpen(false); }}
+            className="flex items-center hover:opacity-80 transition-opacity"
+          >
             <BrainCircuit className="w-6 h-6 mr-2 text-[#219079]" />
             <span className="text-lg font-bold dark:text-white">
               SmartLists
             </span>
-          </div>
+          </button>
           <div className="flex items-center gap-2">
             <button
               onClick={toggleDarkMode}
@@ -97,6 +104,12 @@ export function Sidebar({
         </nav>
 
         <div className="pt-6 border-t border-[#EDEDED] dark:border-[#333333] space-y-1">
+          <SidebarItem
+            icon={Home}
+            label="Home"
+            isActive={activeTab === "chat"}
+            onClick={() => { setActiveTab("chat"); setSidebarOpen(false); }}
+          />
           <SidebarItem icon={Settings} label="Settings" />
           <a href="/account/logout" className="block">
             <SidebarItem icon={HelpCircle} label="Sign Out" />
