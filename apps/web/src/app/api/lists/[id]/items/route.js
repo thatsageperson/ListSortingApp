@@ -1,6 +1,7 @@
 import sql from "@/app/api/utils/sql";
 import { auth } from "@/auth";
 
+/** Returns all items for the list if the user owns it or has access via sharing. */
 export async function GET(request, { params }) {
   try {
     const session = await auth();
@@ -34,6 +35,7 @@ export async function GET(request, { params }) {
   }
 }
 
+/** Adds a new item (content, optional priority) to the list for owner or edit permission. */
 export async function POST(request, { params }) {
   try {
     const session = await auth();
@@ -63,13 +65,13 @@ export async function POST(request, { params }) {
       );
     }
 
-    const { content, priority } = await request.json();
+    const { content, priority, notes } = await request.json();
     if (!content) {
       return Response.json({ error: "Content is required" }, { status: 400 });
     }
     const [newItem] = await sql`
-      INSERT INTO list_items (list_id, content, priority, completed)
-      VALUES (${params.id}, ${content}, ${priority || null}, false)
+      INSERT INTO list_items (list_id, content, priority, completed, notes)
+      VALUES (${params.id}, ${content}, ${priority || null}, false, ${notes || null})
       RETURNING *
     `;
     return Response.json(newItem);
@@ -79,6 +81,7 @@ export async function POST(request, { params }) {
   }
 }
 
+/** Updates an item (completed, priority, or content) for owner or edit permission. */
 export async function PUT(request, { params }) {
   try {
     const session = await auth();
@@ -108,7 +111,7 @@ export async function PUT(request, { params }) {
       );
     }
 
-    const { itemId, completed, priority, content } = await request.json();
+    const { itemId, completed, priority, content, notes } = await request.json();
     if (!itemId) {
       return Response.json({ error: "Item ID is required" }, { status: 400 });
     }
@@ -129,6 +132,10 @@ export async function PUT(request, { params }) {
       setClauses.push(`content = $${paramCount++}`);
       values.push(content);
     }
+    if (notes !== undefined) {
+      setClauses.push(`notes = $${paramCount++}`);
+      values.push(notes);
+    }
 
     if (setClauses.length === 0) {
       return Response.json({ error: "No fields to update" }, { status: 400 });
@@ -144,6 +151,7 @@ export async function PUT(request, { params }) {
   }
 }
 
+/** Deletes one item by itemId or all items in the list; requires owner or edit permission. */
 export async function DELETE(request, { params }) {
   try {
     const session = await auth();

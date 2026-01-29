@@ -1,6 +1,7 @@
 import sql from "@/app/api/utils/sql";
 import { auth } from "@/auth";
 
+/** Calls AI to analyze a list purpose and return rules and description for the new list. */
 export async function POST(request) {
   try {
     const session = await auth();
@@ -24,11 +25,15 @@ export async function POST(request) {
     `;
 
     const aiResponse = await fetch(
-      `${process.env.APP_URL}/integrations/chat-gpt/conversationgpt4`,
+      "https://api.openai.com/v1/chat/completions",
       {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+        },
         body: JSON.stringify({
+          model: "gpt-4o-mini",
           messages: [
             {
               role: "system",
@@ -36,18 +41,21 @@ export async function POST(request) {
             },
             { role: "user", content: prompt },
           ],
-          json_schema: {
-            name: "list_analysis",
-            schema: {
-              type: "object",
-              properties: {
-                rules: { type: "string" },
-                description: { type: "string" },
+          response_format: {
+            type: "json_schema",
+            json_schema: {
+              name: "list_analysis",
+              strict: true,
+              schema: {
+                type: "object",
+                properties: {
+                  rules: { type: "string" },
+                  description: { type: "string" },
+                },
+                required: ["rules", "description"],
+                additionalProperties: false,
               },
-              required: ["rules", "description"],
-              additionalProperties: false,
             },
-            strict: true,
           },
         }),
       },

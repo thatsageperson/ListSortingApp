@@ -1,5 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
+/**
+ * Provides the process-input mutation: sends user input to the API, updates chat history, and invalidates items.
+ */
 export function useChatMutations(setChatHistory, setMessage) {
   const queryClient = useQueryClient();
 
@@ -16,7 +19,7 @@ export function useChatMutations(setChatHistory, setMessage) {
       setChatHistory((prev) => [...prev, { role: "user", content: input }]);
     },
     onSuccess: (data) => {
-      queryClient.invalidateQueries(["items"]);
+      queryClient.invalidateQueries({ queryKey: ["items"] });
       if (data.items && data.items.length > 0) {
         const itemSummary = data.items
           .map((i) => `'${i.content}' to ${i.listName}`)
