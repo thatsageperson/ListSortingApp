@@ -2,14 +2,13 @@
   "$schema": "https://schema.railpack.com",
   "steps": {
     "install": {
-      "aptPackages": ["python3", "make", "g++"],
-      "commands": ["npm install --legacy-peer-deps"]
+      "commands": ["cd /app/apps/web && npm install --legacy-peer-deps"]
     },
     "build": {
-      "commands": ["npm run build"]
+      "commands": ["cd /app/apps/web && npm run build"]
     }
   },
   "deploy": {
-    "startCommand": "node build/server/index.js"
+    "startCommand": "cd /app/apps/web && node build/server/index.js"
   }
 }
