@@ -1,5 +1,6 @@
 import { serializeError } from 'serialize-error';
 
+/** Sends a serialized error to the Create logs endpoint for remote reporting. */
 export const reportErrorToRemote = async ({ error }) => {
   if (
     !process.env.EXPO_PUBLIC_LOGS_ENDPOINT ||

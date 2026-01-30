@@ -2,6 +2,7 @@ import { isErrorLike, serializeError } from 'serialize-error';
 import React, { type ReactNode, useEffect, useState, useCallback, useRef } from 'react';
 import { Animated, Text, View } from 'react-native';
 
+/** Animated error toast/banner used by error boundaries; accepts optional description and children. */
 export function SharedErrorBoundary({
   isOpen,
   children,
@@ -82,7 +83,7 @@ export function SharedErrorBoundary({
                 App Error Detected
               </Text>
               <Text style={{ color: '#959697', fontSize: 14, fontWeight: '300' }}>
-                {description ?? 'It looks like an error occurred while trying to use your app.'}
+                {description ?? 'Something went wrong. Try restarting the app.'}
               </Text>
             </View>
             {children}

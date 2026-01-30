@@ -53,12 +53,20 @@ export async function POST(request) {
       7. For TASKS: set completed to false, keep as future action, set timestamp to null.
       8. Detect priority: "low", "medium", "high", or null if not applicable.
       9. If an item doesn't fit any list, set listId to null.
+      10. Detect the user's desired formatting style and set display_mode accordingly:
+          - "todo-strike": Default for tasks. Also when user says "checklist", "check off", or "to-do".
+          - "todo-no-strike": When user says "don't cross out" or "just a checkbox".
+          - "bullet": When user says "bullet point", "list item", or "note".
+          - "log-clock": Default for log entries. Also when user says "record this", "logged", or "timestamp".
 
       Examples (assuming current time is ${now}):
-      - "I walked the dog at 8am, it peed and pooped" → type: "log", content: "Dog walk", notes: "Peed and pooped", timestamp: "<today at 8am ISO>"
-      - "Walk the dog and make sure to bring bags" → type: "task", content: "Walk the dog", notes: "Bring bags", timestamp: null
-      - "went to gym yesterday at 6am, did legs and cardio" → type: "log", content: "Gym session", notes: "Legs and cardio", timestamp: "<yesterday 6am ISO>"
-      - "I walked the dog at 8pm" → type: "log", content: "Dog walk", notes: null, timestamp: "<today at 8pm ISO>"
+      - "I walked the dog at 8am, it peed and pooped" → type: "log", content: "Dog walk", notes: "Peed and pooped", display_mode: "log-clock", timestamp: "<today at 8am ISO>"
+      - "Walk the dog and make sure to bring bags" → type: "task", content: "Walk the dog", notes: "Bring bags", display_mode: "todo-strike", timestamp: null
+      - "went to gym yesterday at 6am, did legs and cardio" → type: "log", content: "Gym session", notes: "Legs and cardio", display_mode: "log-clock", timestamp: "<yesterday 6am ISO>"
+      - "I walked the dog at 8pm" → type: "log", content: "Dog walk", notes: null, display_mode: "log-clock", timestamp: "<today at 8pm ISO>"
+      - "Add a bullet point for 'Buy milk'" → type: "task", content: "Buy milk", notes: null, display_mode: "bullet", timestamp: null
+      - "Record that I finished the report at 2pm" → type: "log", content: "Finished report", notes: null, display_mode: "log-clock", timestamp: "<today at 2pm ISO>"
+      - "Checklist item: Clean the kitchen" → type: "task", content: "Clean the kitchen", notes: null, display_mode: "todo-strike", timestamp: null
 
       Respond with ONLY a JSON object containing an 'items' array.
     `;
@@ -77,7 +85,7 @@ export async function POST(request) {
             {
               role: "system",
               content:
-                "You are an AI that organizes text into lists and distinguishes between past events (logs) and future tasks.",
+                "You are an AI that organizes text into lists and distinguishes between past events (logs) and future tasks. Detect the user's desired formatting style for each item.",
             },
             { role: "user", content: prompt },
           ],
@@ -101,8 +109,9 @@ export async function POST(request) {
                         type: { type: "string", enum: ["task", "log"] },
                         timestamp: { type: ["string", "null"] },
                         notes: { type: ["string", "null"] },
+                        display_mode: { type: "string", enum: ["todo-strike", "todo-no-strike", "bullet", "log-clock"] },
                       },
-                      required: ["content", "listId", "priority", "completed", "type", "timestamp", "notes"],
+                      required: ["content", "listId", "priority", "completed", "type", "timestamp", "notes", "display_mode"],
                       additionalProperties: false,
                     },
                   },
@@ -125,8 +134,8 @@ export async function POST(request) {
       if (item.listId) {
         const createdAt = item.timestamp || now;
         const [inserted] = await sql`
-          INSERT INTO list_items (list_id, content, priority, completed, type, created_at, notes)
-          VALUES (${item.listId}, ${item.content}, ${item.priority || null}, ${item.completed}, ${item.type}, ${createdAt}, ${item.notes || null})
+          INSERT INTO list_items (list_id, content, priority, completed, type, created_at, notes, display_mode)
+          VALUES (${item.listId}, ${item.content}, ${item.priority || null}, ${item.completed}, ${item.type}, ${createdAt}, ${item.notes || null}, ${item.display_mode || "todo-strike"})
           RETURNING *
         `;
         createdItems.push({

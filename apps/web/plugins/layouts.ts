@@ -28,6 +28,7 @@ const DEFAULT_LAYOUT_FILES = ['layout.jsx'];
 const DEFAULT_PARAM_PATTERN = /\[(\.{3})?([^\]]+)\]/g;
 const NO_LAYOUT_QUERY = '?noLayout.jsx';
 
+/** Vite plugin that wraps page components with hierarchical layout components from parent directories. */
 export function layoutWrapperPlugin(userOpts: HierarchicalLayoutOptions = {}): Plugin {
   const opts: Required<HierarchicalLayoutOptions> = {
     pagePattern: userOpts.pagePattern ?? DEFAULT_PAGE_PATTERN,

@@ -3,6 +3,7 @@
   "main": "index",
   "version": "1.0.0",
   "scripts": {
+    "start": "expo start --lan",
     "postinstall": "patch-package"
   },
   "dependencies": {

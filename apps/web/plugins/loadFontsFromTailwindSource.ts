@@ -1589,6 +1589,7 @@ const GOOGLE_FONTS = new Map<string, string>(
 const styleString =
   '0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900';
 
+/** Returns the Google Fonts CSS2 URL for a font family with all weights/styles. */
 const getFontURL = (font: string) => {
   return `https://fonts.googleapis.com/css2?${`family=${font.replaceAll(' ', '+')}:ital,wght@${styleString}`}&display=block`;
 };
@@ -1609,6 +1610,7 @@ const fontBlacklist = new Set([
   'black',
 ]);
 
+/** Extracts font-* Tailwind class names from source code and maps them to Google Font names. */
 const extractFonts = (code: string) => {
   // Regular expression to match class names starting with "font-" that appear
   // inside class attributes
@@ -1643,14 +1645,16 @@ const extractFonts = (code: string) => {
   return fonts.sort((a, b) => a.localeCompare(b));
 };
 
+/** Vite plugin that discovers font-* usage in source and injects Google Font links via virtual:load-fonts.jsx. */
 export function loadFontsFromTailwindSource(): PluginOption {
   // Store collected font names
   const collectedFonts = new Set<string>();
 
-  // Reset the collected fonts
+  /** Clears the collected fonts set. */
   const reset = () => {
     collectedFonts.clear();
   };
+  // Scans src/**/*.{js,ts,jsx,tsx} and adds discovered fonts to collectedFonts.
   const collectFonts = async () => {
     const files = await fg('src/**/*.{js,ts,jsx,tsx}');
     const allFonts = await Promise.all(

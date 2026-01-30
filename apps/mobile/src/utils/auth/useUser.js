@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 import { useAuth } from './useAuth';
 
+/** Returns the current user and loading/refetch from the auth store. */
 export const useUser = () => {
 	const { auth, isReady } = useAuth();
 	const user = auth?.user || null;

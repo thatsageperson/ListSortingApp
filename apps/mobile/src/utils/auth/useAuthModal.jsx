@@ -4,6 +4,7 @@ import { create } from 'zustand';
 import { useCallback, useMemo } from 'react';
 import { AuthWebView } from './AuthWebView';
 import { useAuthStore, useAuthModal } from './store';
+import { AUTH_DISABLED } from './config';
 
 
 /**
@@ -32,6 +33,8 @@ import { useAuthStore, useAuthModal } from './store';
 export const AuthModal = () => {
   const { isOpen, mode } = useAuthModal();
   const { auth } = useAuthStore();
+
+  if (AUTH_DISABLED) return null;
 
   const snapPoints = useMemo(() => ['100%'], []);
   const proxyURL = process.env.EXPO_PUBLIC_PROXY_BASE_URL;

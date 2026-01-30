@@ -11,6 +11,9 @@ const queryClient = new QueryClient({
   },
 });
 
+/**
+ * Root layout that wraps the app in React Query's QueryClientProvider for data fetching.
+ */
 export default function RootLayout({children}) {
   return (
     <QueryClientProvider client={queryClient}>

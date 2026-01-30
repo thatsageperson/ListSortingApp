@@ -1,11 +1,3 @@
-import ExceptionsManager from 'react-native/Libraries/Core/ExceptionsManager';
-
-if (__DEV__) {
-  ExceptionsManager.handleException = (error, isFatal) => {
-    // no-op
-  };
-}
-
 import 'react-native-url-polyfill/auto';
 import './src/__create/polyfills';
 global.Buffer = require('buffer').Buffer;

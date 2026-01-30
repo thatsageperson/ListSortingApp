@@ -1,6 +1,7 @@
 import sql from "@/app/api/utils/sql";
 import { auth } from "@/auth";
 
+/** Returns all lists owned by the user and lists shared with them. */
 export async function GET() {
   try {
     const session = await auth();
@@ -39,6 +40,7 @@ export async function GET() {
   }
 }
 
+/** Creates a new list for the current user with name, optional description, and rules. */
 export async function POST(request) {
   try {
     const session = await auth();

@@ -1,3 +1,6 @@
+/**
+ * Final step: show AI understanding and matching rules, then create list or go back.
+ */
 export function NewListStep3({ analyzedRules, onBack, onCreate }) {
   return (
     <div className="space-y-6">

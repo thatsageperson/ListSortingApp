@@ -27,6 +27,7 @@ export function Sidebar({
   lists,
   isLoadingLists,
   deleteListMutation,
+  onSettingsClick,
 }) {
   return (
     <div
@@ -70,7 +71,7 @@ export function Sidebar({
         <nav className="flex-1 space-y-1 overflow-y-auto">
           <SidebarItem
             icon={MessageSquare}
-            label="Organize Items"
+            label="Add Items"
             isActive={activeTab === "chat"}
             onClick={() => {
               setActiveTab("chat");
@@ -110,7 +111,7 @@ export function Sidebar({
             isActive={activeTab === "chat"}
             onClick={() => { setActiveTab("chat"); setSidebarOpen(false); }}
           />
-          <SidebarItem icon={Settings} label="Settings" />
+          <SidebarItem icon={Settings} label="Settings" onClick={onSettingsClick} />
           <a href="/account/logout" className="block">
             <SidebarItem icon={HelpCircle} label="Sign Out" />
           </a>

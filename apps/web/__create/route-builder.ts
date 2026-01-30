@@ -14,7 +14,7 @@ if (globalThis.fetch) {
   globalThis.fetch = updatedFetch;
 }
 
-// Recursively find all route.js files
+/** Recursively finds all route.js files under the given directory. */
 async function findRouteFiles(dir: string): Promise<string[]> {
   const files = await readdir(dir);
   let routes: string[] = [];
@@ -42,7 +42,7 @@ async function findRouteFiles(dir: string): Promise<string[]> {
   return routes;
 }
 
-// Helper function to transform file path to Hono route path
+/** Converts a route file path to Hono path segments (including [id] and [...slug]). */
 function getHonoPath(routeFile: string): { name: string; pattern: string }[] {
   const relativePath = routeFile.replace(__dirname, '');
   const parts = relativePath.split('/').filter(Boolean);

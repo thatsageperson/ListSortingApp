@@ -1,5 +1,8 @@
 import { Trash2 } from "lucide-react";
 
+/**
+ * Single sidebar nav item with icon and label; optionally shows a delete button on hover.
+ */
 export function SidebarItem({
   icon: Icon,
   label,

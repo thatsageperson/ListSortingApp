@@ -10,6 +10,7 @@ const authActions = [
     "webauthn-options",
 ]
 
+/** Returns true if the pathname is an auth API path (e.g. /api/auth/signin, /api/auth/callback/...). */
 export function isAuthAction(
     pathname: string,
 ): boolean {

@@ -6,6 +6,7 @@ const { reportErrorToRemote } = require('./report-error-to-remote');
 const VIRTUAL_ROOT = path.join(__dirname, '../.metro-virtual');
 const VIRTUAL_ROOT_UNRESOLVED = path.join(VIRTUAL_ROOT, 'unresolved');
 
+/** Handles Metro resolve errors: reports to remote and on web returns a virtual module that throws a clear error. */
 const handleResolveRequestError = ({ error, context, moduleName, platform }) => {
   const errorMessage = `Unable to resolve module '${moduleName}' from '${context.originModulePath}'`;
   const syntheticError = new Error(errorMessage);

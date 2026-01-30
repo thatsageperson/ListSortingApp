@@ -62,6 +62,7 @@ function useOptionalRef<T>(ref?: Ref<T> | null): RefObject<T> {
   return (ref as RefObject<T> | null) ?? fallbackRef;
 }
 
+/** Polymorphic component used by add-render-ids: renders as the given tag with optional img/background fallback. */
 const CreatePolymorphicComponent = forwardRef(
   // @ts-ignore
   function CreatePolymorphicComponentRender<As extends ElementType = 'div'>(

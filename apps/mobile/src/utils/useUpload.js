@@ -2,8 +2,12 @@ import * as React from 'react';
 import { UploadClient } from '@uploadcare/upload-client'
 const client = new UploadClient({ publicKey: process.env.EXPO_PUBLIC_UPLOADCARE_PUBLIC_KEY });
 
+/**
+ * Hook that returns an upload function and loading state. Supports reactNativeAsset, url, base64, or buffer.
+ */
 function useUpload() {
   const [loading, setLoading] = React.useState(false);
+  /** Uploads via FormData (file), JSON (url/base64), or raw body (buffer); returns { url, mimeType } or { error }. */
   const upload = React.useCallback(async (input) => {
     try {
       setLoading(true);

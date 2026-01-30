@@ -1,8 +1,10 @@
-
 import React, { useRef, useEffect } from 'react';
 import { Platform, Keyboard, KeyboardAvoidingView } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
+/**
+ * KeyboardAvoidingView that uses Reanimated for smooth keyboard offset animation on iOS/Android.
+ */
 const KeyboardAvoidingAnimatedView = (props, ref) => {
   const {
     children,

@@ -60,6 +60,7 @@ if (import.meta.hot) {
   });
 }
 
+/** Fixed bottom toast-style UI for displaying app errors. */
 function SharedErrorBoundary({
   isOpen,
   children,
@@ -101,10 +102,12 @@ function SharedErrorBoundary({
  * this in case something goes wrong outside of the normal user's app flow.
  * React-router will mount this one
  */
+/** Top-level error boundary used by React Router when an error occurs. */
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   return <SharedErrorBoundary isOpen={true} />;
 }
 
+/** Internal error boundary with "Try to fix", "Show logs", or "Copy error" actions. */
 function InternalErrorBoundary({ error: errorArg }: Route.ErrorBoundaryProps) {
   const routeError = useRouteError();
   const asyncError = useAsyncError();
@@ -153,6 +156,7 @@ function InternalErrorBoundary({ error: errorArg }: Route.ErrorBoundaryProps) {
     useRef<HTMLButtonElement>(null)
   );
 
+  /** Returns true if the app is running inside an iframe (e.g. sandbox). */
   function isInIframe() {
     try {
       return window.parent !== window;
@@ -220,6 +224,7 @@ class ErrorBoundaryWrapper extends Component<ErrorBoundaryProps, ErrorBoundarySt
   }
 }
 
+/** Renders the result of calling loader(); used inside ClientOnly. */
 function LoaderWrapper({ loader }: { loader: () => React.ReactNode }) {
   return <>{loader()}</>;
 }
@@ -228,6 +233,7 @@ type ClientOnlyProps = {
   loader: () => React.ReactNode;
 };
 
+/** Renders children only after mount, wrapped in ErrorBoundaryWrapper. */
 export const ClientOnly: React.FC<ClientOnlyProps> = ({ loader }) => {
   const [isMounted, setIsMounted] = useState(false);
 
@@ -282,6 +288,7 @@ export function useHmrConnection(): boolean {
 }
 
 const healthyResponseType = 'sandbox:web:healthcheck:response';
+/** Listens for sandbox healthcheck and responds with HMR connection status. */
 const useHandshakeParent = () => {
   const isHmrConnected = useHmrConnection();
   useEffect(() => {
@@ -304,6 +311,7 @@ const useHandshakeParent = () => {
   }, [isHmrConnected]);
 };
 
+/** Listens for sandbox codegen messages and updates the sandbox store. */
 const useCodeGen = () => {
   const { startCodeGen, setCodeGenGenerating, completeCodeGen, errorCodeGen, stopCodeGen } =
     useSandboxStore();
@@ -337,6 +345,7 @@ const useCodeGen = () => {
   }, [startCodeGen, setCodeGenGenerating, completeCodeGen, errorCodeGen, stopCodeGen]);
 };
 
+/** Listens for sandbox refresh request and reloads the page. */
 const useRefresh = () => {
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
@@ -354,6 +363,7 @@ const useRefresh = () => {
   }, []);
 };
 
+/** Waits for fonts and images to load before taking a screenshot. */
 const waitForScreenshotReady = async () => {
   const images = Array.from(document.images);
 
@@ -378,6 +388,7 @@ const waitForScreenshotReady = async () => {
   await new Promise((resolve) => setTimeout(resolve, 250));
 };
 
+/** Listens for sandbox screenshot request, captures the page as PNG, and posts the data URL. */
 export const useHandleScreenshotRequest = () => {
   useEffect(() => {
     const handleMessage = async (event: MessageEvent) => {
@@ -422,6 +433,8 @@ export const useHandleScreenshotRequest = () => {
     };
   }, []);
 };
+
+/** Root layout: sandbox handshake, codegen, refresh, screenshot, navigation, and HTML shell. */
 export function Layout({ children }: { children: ReactNode }) {
   useHandshakeParent();
   useCodeGen();
@@ -478,6 +491,7 @@ export function Layout({ children }: { children: ReactNode }) {
   );
 }
 
+/** Wraps the app in SessionProvider and renders the current route outlet. */
 export default function App() {
   return (
     <SessionProvider>

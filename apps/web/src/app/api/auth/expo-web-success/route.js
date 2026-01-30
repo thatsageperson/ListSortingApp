@@ -1,16 +1,18 @@
 import { getToken } from '@auth/core/jwt';
+
+/** Success callback for Expo web auth: returns HTML that posts AUTH_SUCCESS with JWT to the parent window. */
 export async function GET(request) {
 	const [token, jwt] = await Promise.all([
 		getToken({
 			req: request,
 			secret: process.env.AUTH_SECRET,
-			secureCookie: process.env.AUTH_URL.startsWith('https'),
+			secureCookie: process.env.AUTH_URL?.startsWith('https') ?? false,
 			raw: true,
 		}),
 		getToken({
 			req: request,
 			secret: process.env.AUTH_SECRET,
-			secureCookie: process.env.AUTH_URL.startsWith('https'),
+			secureCookie: process.env.AUTH_URL?.startsWith('https') ?? false,
 		}),
 	]);
 

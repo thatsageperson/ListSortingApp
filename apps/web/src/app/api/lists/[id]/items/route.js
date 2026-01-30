@@ -111,7 +111,7 @@ export async function PUT(request, { params }) {
       );
     }
 
-    const { itemId, completed, priority, content, notes } = await request.json();
+    const { itemId, completed, priority, content, notes, display_mode } = await request.json();
     if (!itemId) {
       return Response.json({ error: "Item ID is required" }, { status: 400 });
     }
@@ -135,6 +135,10 @@ export async function PUT(request, { params }) {
     if (notes !== undefined) {
       setClauses.push(`notes = $${paramCount++}`);
       values.push(notes);
+    }
+    if (display_mode !== undefined) {
+      setClauses.push(`display_mode = $${paramCount++}`);
+      values.push(display_mode);
     }
 
     if (setClauses.length === 0) {

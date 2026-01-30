@@ -1,6 +1,9 @@
 import * as React from 'react';
 
-  function useHandleStreamResponse({
+/**
+ * Consumes a ReadableStream response body and calls onChunk with accumulated text and onFinish when done.
+ */
+function useHandleStreamResponse({
   onChunk,
   onFinish
 }) {

@@ -2,6 +2,9 @@ import { useState } from "react";
 import useAuth from "@/utils/useAuth";
 import { BrainCircuit } from "lucide-react";
 
+/**
+ * Sign-in page: email/password, Google/Apple OAuth, and guest mode.
+ */
 export default function SignInPage() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -10,6 +13,7 @@ export default function SignInPage() {
 
   const { signInWithCredentials, signIn } = useAuth();
 
+  /** Submits email/password sign-in and handles errors. */
   const onSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -55,6 +59,7 @@ export default function SignInPage() {
     }
   };
 
+  /** Initiates Google OAuth sign-in. */
   const handleGoogleSignIn = async () => {
     try {
       await signIn("google", { callbackUrl: "/" });
@@ -63,6 +68,7 @@ export default function SignInPage() {
     }
   };
 
+  /** Initiates Apple OAuth sign-in. */
   const handleAppleSignIn = async () => {
     try {
       await signIn("apple", { callbackUrl: "/" });
@@ -71,6 +77,7 @@ export default function SignInPage() {
     }
   };
 
+  /** Enables guest mode in localStorage and redirects to home. */
   const handleGuestMode = () => {
     if (typeof window !== "undefined") {
       localStorage.setItem("guestMode", "true");

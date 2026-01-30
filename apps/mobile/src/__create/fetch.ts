@@ -4,6 +4,7 @@ import { fetch as expoFetch } from 'expo/fetch';
 const originalFetch = fetch;
 const authKey = `${process.env.EXPO_PUBLIC_PROJECT_GROUP_ID}-jwt`;
 
+/** Extracts the request URL from fetch input (string or Request-like). */
 const getURLFromArgs = (...args: Parameters<typeof fetch>) => {
   const [urlArg] = args;
   let url: string | null;
@@ -17,10 +18,12 @@ const getURLFromArgs = (...args: Parameters<typeof fetch>) => {
   return url;
 };
 
+/** True for file:// or data: URLs. */
 const isFileURL = (url: string) => {
   return url.startsWith('file://') || url.startsWith('data:');
 };
 
+/** True for relative paths or EXPO_PUBLIC_BASE_URL. */
 const isFirstPartyURL = (url: string) => {
   return (
     url.startsWith('/') ||
@@ -28,11 +31,13 @@ const isFirstPartyURL = (url: string) => {
   );
 };
 
+/** True for /_create/ paths (proxy). */
 const isSecondPartyURL = (url: string) => {
   return url.startsWith('/_create/');
 };
 
 type Params = Parameters<typeof expoFetch>;
+/** Fetch wrapper that adds Create headers and JWT; prefixes first-party URLs with base URL. */
 const fetchToWeb = async function fetchWithHeaders(...args: Params) {
   const firstPartyURL = process.env.EXPO_PUBLIC_BASE_URL;
   const secondPartyURL = process.env.EXPO_PUBLIC_PROXY_BASE_URL;

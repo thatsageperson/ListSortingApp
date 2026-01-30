@@ -1,5 +1,8 @@
 import { Menu, Moon, Sun } from "lucide-react";
 
+/**
+ * Mobile-only header with menu button to open the sidebar and dark mode toggle.
+ */
 export function MobileHeader({ setSidebarOpen, darkMode, toggleDarkMode }) {
   return (
     <div className="lg:hidden fixed top-0 left-0 right-0 bg-white dark:bg-[#121212] border-b border-[#EDEDED] dark:border-[#333333] z-50 px-6 py-4 flex items-center justify-between">

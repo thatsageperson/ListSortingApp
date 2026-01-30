@@ -2,6 +2,9 @@ import { useFocusEffect } from '@react-navigation/native';
 import { useNavigation } from 'expo-router';
 import { BackHandler } from 'react-native';
 
+/**
+ * Disables back gesture and hardware back button on the current screen while it is focused.
+ */
 export const usePreventBack = () => {
 	const navigation = useNavigation();
 

@@ -25,6 +25,7 @@ interface SandboxState {
 	resetToIdle: () => void;
 }
 
+/** Zustand store for sandbox/codegen status (idle, generating, complete, error, etc.). */
 export const useSandboxStore = create<SandboxState>((set, get) => ({
 	status: 'idle',
 	isGenerating: false,

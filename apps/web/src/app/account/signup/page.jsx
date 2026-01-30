@@ -2,6 +2,9 @@ import { useState } from "react";
 import useAuth from "@/utils/useAuth";
 import { BrainCircuit } from "lucide-react";
 
+/**
+ * Sign-up page: email/password and Google/Apple OAuth registration.
+ */
 export default function SignUpPage() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -10,6 +13,7 @@ export default function SignUpPage() {
 
   const { signUpWithCredentials, signIn } = useAuth();
 
+  /** Submits email/password sign-up and handles errors. */
   const onSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -55,6 +59,7 @@ export default function SignUpPage() {
     }
   };
 
+  /** Initiates Google OAuth sign-up. */
   const handleGoogleSignUp = async () => {
     try {
       await signIn("google", { callbackUrl: "/" });
@@ -63,6 +68,7 @@ export default function SignUpPage() {
     }
   };
 
+  /** Initiates Apple OAuth sign-up. */
   const handleAppleSignUp = async () => {
     try {
       await signIn("apple", { callbackUrl: "/" });

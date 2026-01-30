@@ -18,6 +18,7 @@ type Tree = {
 	isCatchAll: boolean;
 };
 
+/** Recursively builds a tree of route paths from the app directory (page.jsx = route). */
 function buildRouteTree(dir: string, basePath = ''): Tree {
 	const files = readdirSync(dir);
 	const node: Tree = {
@@ -60,6 +61,7 @@ function buildRouteTree(dir: string, basePath = ''): Tree {
 	return node;
 }
 
+/** Converts a route tree into React Router route config entries (index/route). */
 function generateRoutes(node: Tree): RouteConfigEntry[] {
 	const routes: RouteConfigEntry[] = [];
 

@@ -3,6 +3,9 @@ import { NewListStep1 } from "./NewListStep1";
 import { NewListStep2 } from "./NewListStep2";
 import { NewListStep3 } from "./NewListStep3";
 
+/**
+ * Multi-step modal for creating a new list: name, purpose/analyze, then confirm and create.
+ */
 export function NewListModal({
   isOpen,
   onClose,

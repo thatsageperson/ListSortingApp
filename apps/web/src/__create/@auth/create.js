@@ -1,13 +1,15 @@
 import { getToken } from '@auth/core/jwt';
 import { getContext } from 'hono/context-storage';
 
+/** Returns an auth helper that reads the JWT from the current Hono context and returns session user. */
 export default function CreateAuth() {
+	/** Returns the current session (user, expires) from the request JWT, or undefined. */
 	const auth = async () => {
 		const c = getContext();
 		const token = await getToken({
 			req: c.req.raw,
 			secret: process.env.AUTH_SECRET,
-			secureCookie: process.env.AUTH_URL.startsWith('https'),
+			secureCookie: process.env.AUTH_URL?.startsWith('https') ?? false,
 		});
 		if (token) {
 			return {

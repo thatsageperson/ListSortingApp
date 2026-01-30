@@ -1,6 +1,7 @@
 import sql from "@/app/api/utils/sql";
 import { auth } from "@/auth";
 
+/** Deletes the list if the current user is the owner. */
 export async function DELETE(request, { params }) {
   try {
     const session = await auth();
@@ -21,6 +22,7 @@ export async function DELETE(request, { params }) {
   }
 }
 
+/** Updates the list name, description, or rules for the owner. */
 export async function PATCH(request, { params }) {
   try {
     const session = await auth();

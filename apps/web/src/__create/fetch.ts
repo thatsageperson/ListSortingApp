@@ -1,6 +1,8 @@
 const originalFetch = fetch;
+/** True when running in a Node/SSR environment. */
 const isBackend = () => typeof window === 'undefined';
 
+/** JSON.stringify that handles Date and Error for cross-window logging. */
 const safeStringify = (value: unknown) =>
   JSON.stringify(value, (_k, v) => {
     if (v instanceof Date) return { __t: 'Date', v: v.toISOString() };
@@ -9,6 +11,7 @@ const safeStringify = (value: unknown) =>
     return v;
   });
 
+/** Sends a console-style message to the parent window when in an iframe. */
 const postToParent = (level: string, text: string, extra: unknown) => {
   try {
     if (isBackend() || !window.parent || window.parent === window) {
@@ -30,6 +33,7 @@ const postToParent = (level: string, text: string, extra: unknown) => {
   }
 };
 
+/** Extracts the request URL from fetch input (string, Request, or URL). */
 const getUrlFromArgs = (...args: Parameters<typeof originalFetch>): string => {
   const [input] = args;
   if (typeof input === 'string') return input;
@@ -37,6 +41,7 @@ const getUrlFromArgs = (...args: Parameters<typeof originalFetch>): string => {
   return `${input.protocol}//${input.host}${input.pathname}`;
 };
 
+/** True for /integrations or /_create paths. */
 const isFirstPartyURL = (url: string) => {
   return url.startsWith('/integrations') || url.startsWith('/_create');
 };
@@ -54,6 +59,7 @@ const isSecondPartyUrl = (url: string) => {
   );
 };
 
+/** Fetch wrapper that adds Create headers and forwards errors to the parent window in sandbox. */
 export const fetchWithHeaders = async (
   input: RequestInfo | URL,
   init?: RequestInit

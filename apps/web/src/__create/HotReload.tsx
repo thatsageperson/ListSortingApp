@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { useSandboxStore } from './hmr-sandbox-store';
 
+/** Shows HMR/sandbox status toasts and listens for Vite HMR events. */
 export function HotReloadIndicator() {
   const { status: sandboxStatus } = useSandboxStore();
 

@@ -5,6 +5,7 @@ import type Stripe from 'stripe';
 
 const env = process.env;
 
+/** Error subclass that carries Stripe type and param for API errors. */
 class StripeError extends Error {
   type: string;
   param: string;

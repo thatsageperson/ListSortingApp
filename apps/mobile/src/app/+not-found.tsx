@@ -21,6 +21,7 @@ interface ParentSitemap {
   }>;
 }
 
+/** 404 screen that shows the missing path and options to go back or create a page (sandbox). */
 function NotFoundScreen() {
   const router = useRouter();
   const params = useGlobalSearchParams();

@@ -1,5 +1,6 @@
 import { serializeError } from 'serialize-error';
 
+/** Returns HTML for the sandbox error page with Fix / Show logs / Copy error buttons. */
 export const getHTMLForErrorPage = (err: unknown): string => {
   return `
 <html>

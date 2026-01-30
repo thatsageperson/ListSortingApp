@@ -1,3 +1,4 @@
+/** Uploads a file via Create API: accepts url, buffer, or base64 and returns { url, mimeType }. */
 async function upload({
   url,
   buffer,

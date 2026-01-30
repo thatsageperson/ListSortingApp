@@ -3,6 +3,7 @@ import type { Route } from './+types/not-found';
 import { useNavigate } from 'react-router';
 import { useCallback, useEffect, useState } from 'react';
 
+/** Loader that returns the missing path and list of existing page routes for the not-found UI. */
 export async function loader({ params }: Route.LoaderArgs) {
   const matches = await fg('src/**/page.{js,jsx,ts,tsx}');
   return {
@@ -27,6 +28,9 @@ interface ParentSitemap {
   }>;
 }
 
+/**
+ * Default 404 page: shows missing path, "Create Page" option, and list of existing routes.
+ */
 export default function CreateDefaultNotFoundPage({
   loaderData,
 }: {
@@ -63,10 +67,12 @@ export default function CreateDefaultNotFoundPage({
     url: page.url,
   }));
 
+  /** Navigates back to the home page. */
   const handleBack = () => {
     navigate('/');
   };
 
+  /** Navigates to the selected route (from sitemap or local routes). */
   const handleSearch = (value: string) => {
     if (!siteMap) {
       const path = `/${value}`;
@@ -76,6 +82,7 @@ export default function CreateDefaultNotFoundPage({
     }
   };
 
+  /** Notifies the parent (sandbox) to create a new page at the missing path. */
   const handleCreatePage = useCallback(() => {
     window.parent.postMessage(
       {

@@ -32,12 +32,27 @@ export function useListMutations(activeTab, setActiveTab) {
     },
   });
 
-  const toggleItemMutation = useMutation({
-    mutationFn: async ({ itemId, completed }) => {
+  const updateListMutation = useMutation({
+    mutationFn: async ({ listId, name, description, rules }) => {
+      const res = await fetch(`/api/lists/${listId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, description, rules }),
+      });
+      if (!res.ok) throw new Error("Failed to update list");
+      return res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["lists"] });
+    },
+  });
+
+  const updateItemMutation = useMutation({
+    mutationFn: async (fields) => {
       const res = await fetch(`/api/lists/${activeTab}/items`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ itemId, completed }),
+        body: JSON.stringify(fields),
       });
       return res.json();
     },
@@ -73,7 +88,8 @@ export function useListMutations(activeTab, setActiveTab) {
   return {
     createListMutation,
     deleteListMutation,
-    toggleItemMutation,
+    updateListMutation,
+    updateItemMutation,
     deleteItemMutation,
     shareListMutation,
   };

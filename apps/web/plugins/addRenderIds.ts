@@ -5,6 +5,8 @@ import type { JSXElement } from '@babel/types';
 import type * as t from '@babel/types';
 
 import { createHash } from 'node:crypto';
+
+/** Generates a short stable ID from file path and location for render tracking. */
 function genId(file: string, loc: { line: number; col: number }) {
   return `render-${createHash('sha1')
     .update(`${file}:${loc.line}:${loc.col}`)
@@ -17,6 +19,7 @@ export interface BabelAPI {
 }
 const idToJsx = { current: {} as Record<string, { code: string }> };
 
+/** Babel visitor that wraps intrinsic JSX elements in CreatePolymorphicComponent with a renderId. */
 const getRenderIdVisitor =
   ({ filename }: { filename: string }) =>
   (api: BabelAPI): PluginObj => {
@@ -140,6 +143,7 @@ const getRenderIdVisitor =
     };
   };
 
+/** Vite plugin that adds stable renderId props to intrinsic JSX elements for sandbox tracking. */
 export function addRenderIds(): PluginOption {
   return {
     name: 'add-render-ids',

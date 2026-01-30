@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo } from 'react';
 import { create } from 'zustand';
 import { Modal, View } from 'react-native';
 import { useAuthModal, useAuthStore, authKey } from './store';
+import { AUTH_DISABLED } from './config';
 
 
 /**
@@ -17,12 +18,17 @@ export const useAuth = () => {
   const { isOpen, close, open } = useAuthModal();
 
   const initiate = useCallback(() => {
-    SecureStore.getItemAsync(authKey).then((auth) => {
-      useAuthStore.setState({
-        auth: auth ? JSON.parse(auth) : null,
-        isReady: true,
+    SecureStore.getItemAsync(authKey)
+      .then((auth) => {
+        useAuthStore.setState({
+          auth: auth ? JSON.parse(auth) : null,
+          isReady: true,
+        });
+      })
+      .catch(() => {
+        // If SecureStore fails (e.g. first launch), still mark ready so the app doesn't stay blank
+        useAuthStore.setState({ auth: null, isReady: true });
       });
-    });
   }, []);
 
   useEffect(() => {}, []);
@@ -41,7 +47,7 @@ export const useAuth = () => {
 
   return {
     isReady,
-    isAuthenticated: isReady ? !!auth : null,
+    isAuthenticated: AUTH_DISABLED ? true : (isReady ? !!auth : null),
     signIn,
     signOut,
     signUp,
@@ -59,6 +65,7 @@ export const useRequireAuth = (options) => {
   const { open } = useAuthModal();
 
   useEffect(() => {
+    if (AUTH_DISABLED) return;
     if (!isAuthenticated && isReady) {
       open({ mode: options?.mode });
     }

@@ -1,5 +1,9 @@
 import { Loader2 } from "lucide-react";
 
+/**
+ * Renders the scrollable list of chat messages (user and assistant) and an optional loading indicator.
+ * Uses a ref at the bottom for auto-scrolling to the latest message.
+ */
 export function ChatHistory({ chatHistory, isPending, chatEndRef }) {
   return (
     <div className="space-y-6 pb-20">

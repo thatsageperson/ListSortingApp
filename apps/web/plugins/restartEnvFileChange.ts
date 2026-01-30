@@ -2,7 +2,7 @@ import type { Plugin } from 'vite';
 import path from 'node:path';
 import fs from 'node:fs';
 
-
+/** Vite plugin that watches .env files and exits the process on change so the runner can restart. */
 export function restartEnvFileChange(): Plugin {
   return {
     name: 'watch-env-and-exit',

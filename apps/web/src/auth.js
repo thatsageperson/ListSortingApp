@@ -9,6 +9,7 @@ import { Pool } from '@neondatabase/serverless'
 import { hash, verify } from 'argon2'
 import Google from "@auth/core/providers/google"
 
+/** Auth adapter that persists sessions, users, accounts, and verification tokens in the database. */
 function Adapter(client) {
   return {
     async createVerificationToken(

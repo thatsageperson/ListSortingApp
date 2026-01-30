@@ -1,6 +1,7 @@
 import sql from "@/app/api/utils/sql";
 import { auth } from "@/auth";
 
+/** Shares the list with a user by email and permission (view/edit). */
 export async function POST(request, { params }) {
   try {
     const session = await auth();
@@ -64,6 +65,7 @@ export async function POST(request, { params }) {
   }
 }
 
+/** Returns all shares for the list (owner only). */
 export async function GET(request, { params }) {
   try {
     const session = await auth();
@@ -103,6 +105,7 @@ export async function GET(request, { params }) {
   }
 }
 
+/** Removes a share by shareId (owner only). */
 export async function DELETE(request, { params }) {
   try {
     const session = await auth();

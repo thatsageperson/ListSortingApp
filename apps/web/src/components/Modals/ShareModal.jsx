@@ -1,5 +1,8 @@
 import { X } from "lucide-react";
 
+/**
+ * Modal to share the active list with another user by email and permission (view/edit).
+ */
 export function ShareModal({
   isOpen,
   onClose,

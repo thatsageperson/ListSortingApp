@@ -1,7 +1,11 @@
 import * as React from 'react';
 
+/**
+ * Hook that returns an upload function and loading state. Supports file, url, base64, or buffer input.
+ */
 function useUpload() {
   const [loading, setLoading] = React.useState(false);
+  /** Uploads via FormData (file), JSON (url/base64), or raw body (buffer); returns { url, mimeType } or { error }. */
   const upload = React.useCallback(async (input) => {
     try {
       setLoading(true);

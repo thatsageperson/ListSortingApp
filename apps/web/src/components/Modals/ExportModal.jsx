@@ -1,14 +1,20 @@
 import { X, Download, Mail, MessageSquare } from "lucide-react";
 
+/**
+ * Modal for exporting the active list: .ics (Apple Reminders), .txt, email, or SMS.
+ */
 export function ExportModal({
   isOpen,
   onClose,
   onExport,
   activeList,
   activeListItems,
+  lastExportFormat,
+  onFormatUsed,
 }) {
   if (!isOpen) return null;
 
+  /** Opens the default mail client with the list as subject and bulleted body. */
   const handleEmailExport = () => {
     const subject = encodeURIComponent(activeList?.name || "My List");
     const body = encodeURIComponent(
@@ -18,6 +24,7 @@ export function ExportModal({
     onClose();
   };
 
+  /** Opens the default SMS app with the list name and bulleted items in the body. */
   const handleSMSExport = () => {
     const body = encodeURIComponent(
       `${activeList?.name || "My List"}:\n${activeListItems.map((i) => `• ${i.content}`).join("\n")}`,

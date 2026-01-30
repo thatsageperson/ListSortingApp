@@ -1,0 +1,7 @@
+{
+  "name": "list-organizer-chat",
+  "private": true,
+  "scripts": {
+    "start": "npm start --prefix apps/mobile"
+  }
+}

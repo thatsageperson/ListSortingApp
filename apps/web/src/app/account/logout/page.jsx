@@ -1,8 +1,12 @@
 import useAuth from "@/utils/useAuth";
 import { BrainCircuit } from "lucide-react";
 
+/**
+ * Logout page: confirms and performs sign-out, then redirects to home.
+ */
 export default function LogoutPage() {
   const { signOut } = useAuth();
+  /** Signs out and redirects to the home page. */
   const handleSignOut = async () => {
     await signOut({
       callbackUrl: "/",

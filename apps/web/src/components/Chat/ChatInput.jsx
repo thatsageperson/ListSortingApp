@@ -1,5 +1,8 @@
 import { Navigation, Loader2 } from "lucide-react";
 
+/**
+ * Text input and send button for the chat. Supports Enter to send and shows a loading state while a message is being sent.
+ */
 export function ChatInput({ message, setMessage, onSend, isPending }) {
   return (
     <div className="px-6 py-6 lg:px-12 lg:pb-12 bg-gradient-to-t from-[#F9F9F9] dark:from-[#0A0A0A] to-transparent">

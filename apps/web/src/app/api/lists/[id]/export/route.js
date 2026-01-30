@@ -1,6 +1,7 @@
 import sql from "@/app/api/utils/sql";
 import { auth } from "@/auth";
 
+/** Exports the list as ics (Apple Reminders), json, or plain text based on ?format=. */
 export async function GET(request, { params }) {
   try {
     const session = await auth();
@@ -10,6 +11,7 @@ export async function GET(request, { params }) {
 
     const url = new URL(request.url);
     const format = url.searchParams.get("format") || "text";
+    const includeCompleted = url.searchParams.get("includeCompleted") !== "false";
 
     // Verify list ownership or sharing
     const [list] = await sql`
@@ -23,11 +25,14 @@ export async function GET(request, { params }) {
       return Response.json({ error: "List not found" }, { status: 404 });
     }
 
-    const items = await sql`
-      SELECT * FROM list_items 
-      WHERE list_id = ${params.id} 
+    let items = await sql`
+      SELECT * FROM list_items
+      WHERE list_id = ${params.id}
       ORDER BY created_at DESC
     `;
+    if (!includeCompleted) {
+      items = items.filter((i) => !i.completed);
+    }
 
     // Format based on type
     if (format === "ics") {

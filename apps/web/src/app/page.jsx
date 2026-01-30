@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Loader2, UserPlus } from "lucide-react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import useUser from "@/utils/useUser";
 import { useDarkMode } from "@/hooks/useDarkMode";
 import { useListMutations } from "@/hooks/useListMutations";
@@ -15,7 +15,13 @@ import { ListView } from "@/components/ListView/ListView";
 import { ExportModal } from "@/components/Modals/ExportModal";
 import { ShareModal } from "@/components/Modals/ShareModal";
 import { NewListModal } from "@/components/Modals/NewListModal/NewListModal";
+import { EditListModal } from "@/components/Modals/EditListModal";
+import { SettingsModal } from "@/components/Modals/SettingsModal";
+import { useSettings } from "@/hooks/useSettings";
 
+/**
+ * Main SmartLists page: sidebar, chat/list view, modals, and guest mode support.
+ */
 export default function SmartListsPage() {
   const chatEndRef = useRef(null);
   const [activeTab, setActiveTab] = useState("chat");
@@ -25,9 +31,11 @@ export default function SmartListsPage() {
   const [isNewListModalOpen, setIsNewListModalOpen] = useState(false);
   const [isExportModalOpen, setIsExportModalOpen] = useState(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+  const [isEditListModalOpen, setIsEditListModalOpen] = useState(false);
   const [shareEmail, setShareEmail] = useState("");
   const [sharePermission, setSharePermission] = useState("view");
   const [isGuestMode, setIsGuestMode] = useState(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
   // Check for guest mode on mount
   useEffect(() => {
@@ -36,7 +44,16 @@ export default function SmartListsPage() {
     }
   }, []);
 
-  const { darkMode, toggleDarkMode } = useDarkMode();
+  const { settings, updateSetting } = useSettings();
+  const { darkMode, toggleDarkMode } = useDarkMode(settings.darkMode);
+
+  // Apply font size setting
+  useEffect(() => {
+    const sizes = { small: "14px", medium: "16px", large: "18px", xl: "20px" };
+    document.documentElement.style.fontSize = sizes[settings.fontSize] || "16px";
+  }, [settings.fontSize]);
+
+  const queryClient = useQueryClient();
   const {
     newListStep,
     setNewListStep,
@@ -90,16 +107,19 @@ export default function SmartListsPage() {
   const {
     createListMutation,
     deleteListMutation,
-    toggleItemMutation,
+    updateListMutation,
+    updateItemMutation,
     deleteItemMutation,
     shareListMutation,
   } = useListMutations(activeTab, setActiveTab);
 
+  /** Closes the new-list modal and resets its state. */
   const closeNewListModal = () => {
     setIsNewListModalOpen(false);
     resetModal();
   };
 
+  /** Sends the current chat message via the process-input mutation. */
   const handleSendMessage = () => {
     if (message.trim()) {
       processInputMutation.mutate(message);
@@ -112,11 +132,15 @@ export default function SmartListsPage() {
 
   const activeList = lists.find((l) => String(l.id) === activeTab);
 
+  /** Exports the active list in the given format (ics/text) and closes the export modal. */
   const handleExport = (format) => {
-    window.location.href = `/api/lists/${activeTab}/export?format=${format}`;
+    const includeCompleted = settings.exportIncludeCompleted;
+    window.location.href = `/api/lists/${activeTab}/export?format=${format}&includeCompleted=${includeCompleted}`;
+    updateSetting("lastExportFormat", format);
     setIsExportModalOpen(false);
   };
 
+  /** Shares the active list with the entered email and permission via the share mutation. */
   const handleShareList = () => {
     if (!shareEmail) return;
     shareListMutation.mutate(
@@ -135,6 +159,32 @@ export default function SmartListsPage() {
     );
   };
 
+  const canEditList =
+    !activeList?.role || activeList?.role === "owner" || activeList?.role === "edit";
+
+  /** Updates the active list name/description/rules and closes the modal. */
+  const handleUpdateList = ({ name, description, rules }) => {
+    if (!activeList) return;
+    if (isGuestMode) {
+      const updatedList = { ...activeList, name, description, rules };
+      const nextLists = lists.map((list) =>
+        String(list.id) === String(activeList.id) ? updatedList : list,
+      );
+      localStorage.setItem("guestLists", JSON.stringify(nextLists));
+      queryClient.setQueryData(["lists", isGuestMode], nextLists);
+      setIsEditListModalOpen(false);
+      return;
+    }
+
+    updateListMutation.mutate(
+      { listId: activeList.id, name, description, rules },
+      {
+        onSuccess: () => setIsEditListModalOpen(false),
+      },
+    );
+  };
+
+  /** Creates the new list with analyzed rules and closes the new-list modal. */
   const handleCreateList = () => {
     createListMutation.mutate(
       {
@@ -212,6 +262,7 @@ export default function SmartListsPage() {
         lists={lists}
         isLoadingLists={isLoadingLists}
         deleteListMutation={deleteListMutation}
+        onSettingsClick={() => setIsSettingsOpen(true)}
       />
 
       {/* Main Content */}
@@ -222,7 +273,7 @@ export default function SmartListsPage() {
           {activeTab === "chat" ? (
             <div className="max-w-3xl mx-auto space-y-8">
               {chatHistory.length === 0 ? (
-                <ChatWelcome lists={lists} />
+                <ChatWelcome />
               ) : (
                 <ChatHistory
                   chatHistory={chatHistory}
@@ -236,9 +287,13 @@ export default function SmartListsPage() {
               activeList={activeList}
               activeListItems={activeListItems}
               isLoadingItems={isLoadingItems}
+              showCompleted={settings.showCompleted}
+              defaultSort={settings.defaultSort}
+              listDensity={settings.listDensity}
               setIsShareModalOpen={setIsShareModalOpen}
               setIsExportModalOpen={setIsExportModalOpen}
-              toggleItemMutation={toggleItemMutation}
+              onEditList={canEditList ? () => setIsEditListModalOpen(true) : null}
+              updateItemMutation={updateItemMutation}
               deleteItemMutation={deleteItemMutation}
             />
           )}
@@ -287,6 +342,19 @@ export default function SmartListsPage() {
         analyzedRules={analyzedRules}
         onAnalyze={analyzePurpose}
         onCreate={handleCreateList}
+      />
+
+      <SettingsModal
+        isOpen={isSettingsOpen}
+        onClose={() => setIsSettingsOpen(false)}
+      />
+
+      <EditListModal
+        isOpen={isEditListModalOpen}
+        onClose={() => setIsEditListModalOpen(false)}
+        activeList={activeList}
+        onSave={handleUpdateList}
+        isSaving={updateListMutation.isPending}
       />
     </div>
   );

@@ -1,3 +1,4 @@
+/** Dev-only error overlay script: shows error panel in iframe and posts sandbox messages. */
 (() => {
   if (!import.meta.env.DEV) return; // skip in prod
 
@@ -6,6 +7,7 @@
 
   const html = (parts, ...vals) => parts.reduce((s, c, i) => s + c + (vals[i] ?? ''), '');
 
+  /** Mounts or updates the error overlay with message and stack, and toggles Fix/Logs/Copy visibility. */
   function mount(msg, stack) {
     lastError = new Error(msg); // keep a real Error
     lastError.stack = stack || lastError?.stack; // use provided stack or the one from the error

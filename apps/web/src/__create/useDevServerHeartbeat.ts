@@ -2,6 +2,7 @@
 
 import { useIdleTimer } from 'react-idle-timer';
 
+/** Sends periodic GET / requests when the user is active to keep the dev server alive. */
 export function useDevServerHeartbeat() {
   useIdleTimer({
     throttle: 60_000 * 3,

@@ -26,12 +26,14 @@ export interface VitePluginRestartOptions {
 
 let i = 0;
 
+/** Normalizes a single value or array into an array. */
 function toArray<T>(arr: T | T[] | undefined): T[] {
 	if (!arr) return [];
 	if (Array.isArray(arr)) return arr;
 	return [arr];
 }
 
+/** Vite plugin that restarts the dev server or triggers full reload when watched files change. */
 export function restart(options: VitePluginRestartOptions = {}): Plugin {
 	const { delay = 500, glob: enableGlob = true } = options;
 

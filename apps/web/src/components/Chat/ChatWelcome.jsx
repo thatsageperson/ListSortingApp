@@ -1,6 +1,9 @@
-import { BrainCircuit, List } from "lucide-react";
+import { BrainCircuit } from "lucide-react";
 
-export function ChatWelcome({ lists }) {
+/**
+ * Welcome screen shown when no chat messages exist.
+ */
+export function ChatWelcome() {
   return (
     <div className="flex flex-col items-center justify-center min-h-[50vh] pt-12">
       <div className="w-16 h-16 bg-[#219079]/10 rounded-3xl flex items-center justify-center mb-6">
@@ -13,22 +16,6 @@ export function ChatWelcome({ lists }) {
         Type in tasks, groceries, ideas, or anything else. I'll automatically
         sort them into your lists.
       </p>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
-        {lists.slice(0, 4).map((l) => (
-          <div
-            key={l.id}
-            className="bg-white dark:bg-[#1E1E1E] p-4 rounded-2xl border border-[#EDEDED] dark:border-[#333333] flex items-center gap-3"
-          >
-            <div className="w-8 h-8 rounded-xl bg-[#219079]/10 flex items-center justify-center text-[#219079]">
-              <List size={16} />
-            </div>
-            <span className="text-sm font-medium dark:text-white">
-              {l.name}
-            </span>
-          </div>
-        ))}
-      </div>
     </div>
   );
 }

@@ -1,17 +1,21 @@
 import * as React from 'react';
 import { useSession } from "@auth/create/react";
 
-
+/**
+ * Returns the current user (and loading/refetch) from the auth session; in production may refetch user data.
+ */
 const useUser = () => {
   const { data: session, status } = useSession();
   const id = session?.user?.id
 
   const [user, setUser] = React.useState(session?.user ?? null);
 
+  /** Returns the user from the given session. */
   const fetchUser = React.useCallback(async (session) => {
   return session?.user;
 }, [])
 
+  /** Refetches user from session (production only). */
   const refetchUser = React.useCallback(() => {
     if(process.env.NEXT_PUBLIC_CREATE_ENV === "PRODUCTION") {
       if (id) {

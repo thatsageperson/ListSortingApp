@@ -1,5 +1,8 @@
 import { Loader2 } from "lucide-react";
 
+/**
+ * Second step: describe the list purpose and trigger AI analysis to finalize.
+ */
 export function NewListStep2({
   newListName,
   newListPurpose,

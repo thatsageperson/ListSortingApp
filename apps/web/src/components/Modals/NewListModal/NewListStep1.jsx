@@ -1,5 +1,8 @@
 import { ChevronRight } from "lucide-react";
 
+/**
+ * First step of the new-list flow: enter list name and proceed to purpose step.
+ */
 export function NewListStep1({ newListName, setNewListName, onNext }) {
   return (
     <div className="space-y-6">
