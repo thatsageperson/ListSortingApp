@@ -6,7 +6,7 @@
 import CreateAuth from "@auth/create"
 import Credentials from "@auth/core/providers/credentials"
 import { Pool } from '@neondatabase/serverless'
-import { hash, verify } from 'argon2'
+import { hash, compare } from 'bcryptjs'
 import Google from "@auth/core/providers/google"
 
 /** Auth adapter that persists sessions, users, accounts, and verification tokens in the database. */
@@ -292,7 +292,7 @@ export const { auth } = CreateAuth({
       return null;
     }
 
-    const isValid = await verify(accountPassword, password);
+    const isValid = await compare(password, accountPassword);
     if (!isValid) {
       return null;
     }
@@ -344,7 +344,7 @@ export const { auth } = CreateAuth({
       });
       await adapter.linkAccount({
         extraData: {
-          password: await hash(password),
+          password: await hash(password, 10),
         },
         type: 'credentials',
         userId: newUser.id,

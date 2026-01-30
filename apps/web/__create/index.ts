@@ -4,7 +4,7 @@ import { skipCSRFCheck } from '@auth/core';
 import Credentials from '@auth/core/providers/credentials';
 import { authHandler, initAuthConfig } from '@hono/auth-js';
 import { Pool, neonConfig } from '@neondatabase/serverless';
-import { hash, verify } from 'argon2';
+import { hash, compare } from 'bcryptjs';
 import { Hono } from 'hono';
 import { contextStorage, getContext } from 'hono/context-storage';
 import { cors } from 'hono/cors';
@@ -161,7 +161,7 @@ if (process.env.AUTH_SECRET) {
               return null;
             }
 
-            const isValid = await verify(accountPassword, password);
+            const isValid = await compare(password, accountPassword);
             if (!isValid) {
               return null;
             }
@@ -206,7 +206,7 @@ if (process.env.AUTH_SECRET) {
               });
               await adapter.linkAccount({
                 extraData: {
-                  password: await hash(password),
+                  password: await hash(password, 10),
                 },
                 type: 'credentials',
                 userId: newUser.id,
