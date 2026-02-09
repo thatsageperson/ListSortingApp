@@ -12,7 +12,17 @@ export async function POST(request) {
     }
     */
 
-    const { purpose } = await request.json();
+    // #region agent log
+    let purpose;
+    try {
+      const body = await request.json();
+      purpose = body?.purpose;
+      fetch('http://127.0.0.1:7242/ingest/03154c9a-7d27-48e7-ae59-993be66d0c71',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'analyze-purpose/route.js:body',message:'request body',data:{hasPurpose:!!purpose},timestamp:Date.now(),hypothesisId:'H3'})}).catch(()=>{});
+    } catch (e) {
+      fetch('http://127.0.0.1:7242/ingest/03154c9a-7d27-48e7-ae59-993be66d0c71',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'analyze-purpose/route.js:request.json',message:'request.json threw',data:{err:String(e?.message)},timestamp:Date.now(),hypothesisId:'H3'})}).catch(()=>{});
+      throw e;
+    }
+    // #endregion
 
     const prompt = `
       The user wants to create a new list with this purpose: "${purpose}"
@@ -62,7 +72,21 @@ export async function POST(request) {
     );
 
     const aiData = await aiResponse.json();
-    return Response.json(JSON.parse(aiData.choices[0].message.content));
+    // #region agent log
+    const hasChoices = Array.isArray(aiData?.choices) && aiData.choices.length > 0;
+    const content = hasChoices ? aiData.choices[0]?.message?.content : undefined;
+    fetch('http://127.0.0.1:7242/ingest/03154c9a-7d27-48e7-ae59-993be66d0c71',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'analyze-purpose/route.js:after openai',message:'openai response',data:{ok:aiResponse.ok,status:aiResponse.status,hasChoices,hasContent:!!content},timestamp:Date.now(),hypothesisId:'H3'})}).catch(()=>{});
+    // #endregion
+    if (!hasChoices || !content) {
+      return Response.json({ error: "Failed to analyze purpose" }, { status: 502 });
+    }
+    let parsed;
+    try {
+      parsed = JSON.parse(content);
+    } catch (parseErr) {
+      return Response.json({ error: "Failed to analyze purpose" }, { status: 500 });
+    }
+    return Response.json(parsed);
   } catch (error) {
     console.error(error);
     return Response.json(

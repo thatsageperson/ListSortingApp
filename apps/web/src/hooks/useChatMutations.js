@@ -13,7 +13,14 @@ export function useChatMutations(setChatHistory, setMessage) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ input }),
       });
-      return res.json();
+      // #region agent log
+      if (!res.ok) {
+        fetch('http://127.0.0.1:7242/ingest/03154c9a-7d27-48e7-ae59-993be66d0c71',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'useChatMutations.js:mutationFn',message:'process-input res not ok',data:{status:res.status,ok:res.ok},timestamp:Date.now(),hypothesisId:'H5'})}).catch(()=>{});
+      }
+      // #endregion
+      const data = await res.json();
+      if (!res.ok) throw new Error(data?.error || data?.message || `Request failed (${res.status})`);
+      return data;
     },
     onMutate: async (input) => {
       setChatHistory((prev) => [...prev, { role: "user", content: input }]);

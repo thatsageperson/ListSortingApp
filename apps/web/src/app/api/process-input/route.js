@@ -14,7 +14,17 @@ export async function POST(request) {
 
     const userId = session?.user?.id || "test-user";
 
-    const { input } = await request.json();
+    // #region agent log
+    let body;
+    try {
+      body = await request.json();
+    } catch (parseErr) {
+      fetch('http://127.0.0.1:7242/ingest/03154c9a-7d27-48e7-ae59-993be66d0c71',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'process-input/route.js:request.json',message:'request.json threw',data:{err:String(parseErr?.message)},timestamp:Date.now(),hypothesisId:'H1'})}).catch(()=>{});
+      throw parseErr;
+    }
+    const { input } = body;
+    fetch('http://127.0.0.1:7242/ingest/03154c9a-7d27-48e7-ae59-993be66d0c71',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'process-input/route.js:after json',message:'body parsed',data:{hasInput:!!input},timestamp:Date.now(),hypothesisId:'H1'})}).catch(()=>{});
+    // #endregion
     if (!input) {
       return Response.json({ error: "Input is required" }, { status: 400 });
     }
@@ -126,7 +136,24 @@ export async function POST(request) {
     );
 
     const aiData = await aiResponse.json();
-    const result = JSON.parse(aiData.choices[0].message.content);
+    // #region agent log
+    const hasChoices = Array.isArray(aiData?.choices) && aiData.choices.length > 0;
+    const content = hasChoices ? aiData.choices[0]?.message?.content : undefined;
+    fetch('http://127.0.0.1:7242/ingest/03154c9a-7d27-48e7-ae59-993be66d0c71',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'process-input/route.js:after openai',message:'openai response',data:{ok:aiResponse.ok,status:aiResponse.status,hasChoices,hasContent:!!content,contentLength:typeof content==='string'?content.length:0},timestamp:Date.now(),hypothesisId:'H2'})}).catch(()=>{});
+    // #endregion
+    if (!hasChoices || !content) {
+      return Response.json({ message: "AI could not process your input. Please try again." }, { status: 502 });
+    }
+    let result;
+    try {
+      result = JSON.parse(content);
+    } catch (parseErr) {
+      fetch('http://127.0.0.1:7242/ingest/03154c9a-7d27-48e7-ae59-993be66d0c71',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'process-input/route.js:JSON.parse',message:'parse content threw',data:{err:String(parseErr?.message)},timestamp:Date.now(),hypothesisId:'H2'})}).catch(()=>{});
+      return Response.json({ error: "Failed to process input" }, { status: 500 });
+    }
+    if (!result || !Array.isArray(result.items)) {
+      return Response.json({ error: "Failed to process input" }, { status: 500 });
+    }
 
     // 3. Insert items into the database
     const createdItems = [];
