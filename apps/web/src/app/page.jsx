@@ -218,7 +218,7 @@ export default function SmartListsPage() {
   */
 
   return (
-    <div className="min-h-screen bg-white dark:bg-[#121212] font-inter flex">
+    <div className="min-h-screen bg-white dark:bg-[#121212] font-sans flex">
       <MobileHeader
         setSidebarOpen={setSidebarOpen}
         darkMode={darkMode}

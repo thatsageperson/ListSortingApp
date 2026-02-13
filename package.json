@@ -2,6 +2,8 @@
   "name": "list-organizer-chat",
   "private": true,
   "scripts": {
-    "start": "npm start --prefix apps/mobile"
+    "start": "npm start --prefix apps/web",
+    "build": "npm run build --prefix apps/web",
+    "build:web": "cd apps/web && npm ci && npm run build"
   }
 }

@@ -13,7 +13,10 @@ import { nextPublicProcessEnv } from './plugins/nextPublicProcessEnv';
 import { restart } from './plugins/restart';
 import { restartEnvFileChange } from './plugins/restartEnvFileChange';
 
-export default defineConfig({
+export default defineConfig(({ command }) => {
+  const isDev = command === 'serve';
+
+  return {
   // Keep them available via import.meta.env.NEXT_PUBLIC_*
   envPrefix: 'NEXT_PUBLIC_',
   optimizeDeps: {
@@ -34,7 +37,20 @@ export default defineConfig({
   logLevel: 'info',
   plugins: [
     nextPublicProcessEnv(),
-    restartEnvFileChange(),
+    ...(isDev ? [
+      restartEnvFileChange(),
+      restart({
+        restart: [
+          'src/**/page.jsx',
+          'src/**/page.tsx',
+          'src/**/layout.jsx',
+          'src/**/layout.tsx',
+          'src/**/route.js',
+          'src/**/route.ts',
+        ],
+      }),
+      consoleToParent(),
+    ] : []),
     reactRouterHonoServer({
       serverEntryPoint: './__create/index.ts',
       runtime: 'node',
@@ -43,22 +59,11 @@ export default defineConfig({
       include: ['src/**/*.{js,jsx,ts,tsx}'], // or RegExp: /src\/.*\.[tj]sx?$/
       exclude: /node_modules/, // skip everything else
       babelConfig: {
-        babelrc: false, // don’t merge other Babel files
+        babelrc: false, // don't merge other Babel files
         configFile: false,
         plugins: ['styled-jsx/babel'],
       },
     }),
-    restart({
-      restart: [
-        'src/**/page.jsx',
-        'src/**/page.tsx',
-        'src/**/layout.jsx',
-        'src/**/layout.tsx',
-        'src/**/route.js',
-        'src/**/route.ts',
-      ],
-    }),
-    consoleToParent(),
     loadFontsFromTailwindSource(),
     addRenderIds(),
     reactRouter(),
@@ -95,4 +100,5 @@ export default defineConfig({
       clientFiles: ['./src/app/**/*', './src/app/root.tsx', './src/app/routes.ts'],
     },
   },
+};
 });
