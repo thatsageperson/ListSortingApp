@@ -87,6 +87,16 @@ export default defineConfig(({ command }) => {
   },
   build: {
     target: 'esnext',
+    minify: 'esbuild',
+    cssMinify: true,
+    sourcemap: false, // Disable source maps in production for faster builds
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'vendor-react': ['react', 'react-dom', 'react-router', 'react-router-dom'],
+        },
+      },
+    },
   },
   clearScreen: false,
   server: {
