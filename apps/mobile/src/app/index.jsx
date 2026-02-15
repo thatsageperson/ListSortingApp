@@ -15,7 +15,7 @@ export default function Index() {
   return (
     <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
       <View style={styles.content}>
-        <Text style={styles.title}>List Organizer</Text>
+        <Text style={styles.title}>jot.</Text>
         <Text style={styles.subtitle}>
           {isAuthenticated
             ? "You're signed in."
@@ -55,7 +55,7 @@ export default function Index() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#FFFBEB',
   },
   content: {
     flex: 1,
@@ -66,13 +66,13 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 28,
     fontWeight: '600',
-    color: '#111',
+    color: '#0F766E',
     marginBottom: 8,
     textAlign: 'center',
   },
   subtitle: {
     fontSize: 16,
-    color: '#666',
+    color: '#6B7280',
     textAlign: 'center',
     marginBottom: 32,
   },
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
     maxWidth: 280,
   },
   button: {
-    backgroundColor: '#111',
+    backgroundColor: '#0F766E',
     paddingVertical: 14,
     paddingHorizontal: 24,
     borderRadius: 10,
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
   buttonSecondary: {
     backgroundColor: 'transparent',
     borderWidth: 1,
-    borderColor: '#ddd',
+    borderColor: '#0F766E',
   },
   buttonText: {
     color: '#fff',
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   buttonTextSecondary: {
-    color: '#111',
+    color: '#0F766E',
     fontSize: 16,
     fontWeight: '600',
   },

@@ -24,7 +24,7 @@ export function ChatHistory({ chatHistory, isPending }) {
         if (item.role === 'loading') {
           return (
             <View style={[styles.bubble, styles.aiBubble]}>
-              <ActivityIndicator size="small" color="#219079" />
+              <ActivityIndicator size="small" color="#0F766E" />
             </View>
           );
         }
@@ -47,15 +47,15 @@ const styles = StyleSheet.create({
   rowUser: { justifyContent: 'flex-end' },
   bubble: { maxWidth: '80%', padding: 14, borderRadius: 20 },
   userBubble: {
-    backgroundColor: '#219079',
+    backgroundColor: '#0F766E',
     borderTopRightRadius: 4,
   },
   aiBubble: {
     backgroundColor: '#fff',
     borderTopLeftRadius: 4,
     borderWidth: 1,
-    borderColor: '#EDEDED',
+    borderColor: '#F3F4F6',
   },
-  text: { fontSize: 15, lineHeight: 22, color: '#1E1E1E' },
+  text: { fontSize: 15, lineHeight: 22, color: '#1F2937' },
   userText: { color: '#fff' },
 });

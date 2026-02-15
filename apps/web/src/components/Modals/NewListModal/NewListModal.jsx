@@ -24,14 +24,14 @@ export function NewListModal({
 
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center p-6 bg-black/60 backdrop-blur-sm">
-      <div className="bg-white dark:bg-[#1E1E1E] w-full max-w-md rounded-3xl p-8 shadow-2xl">
+      <div className="bg-white dark:bg-slate-surface w-full max-w-md rounded-3xl p-8 shadow-2xl">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold dark:text-white">
             Create New List
           </h2>
           <button
             onClick={onClose}
-            className="text-[#70757F] hover:text-[#1E1E1E]"
+            className="text-gray-500 hover:text-charcoal"
           >
             <X size={24} />
           </button>

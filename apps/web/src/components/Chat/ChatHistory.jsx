@@ -15,8 +15,8 @@ export function ChatHistory({ chatHistory, isPending, chatEndRef }) {
           <div
             className={`max-w-[80%] p-4 rounded-3xl ${
               chat.role === "user"
-                ? "bg-[#219079] text-white rounded-tr-none"
-                : "bg-white dark:bg-[#1E1E1E] text-[#1E1E1E] dark:text-white border border-[#EDEDED] dark:border-[#333333] rounded-tl-none shadow-sm"
+                ? "bg-teal-700 text-white rounded-tr-none"
+                : "bg-white dark:bg-slate-surface text-charcoal dark:text-white border border-gray-100 dark:border-slate-700 rounded-tl-none shadow-sm"
             }`}
           >
             <p className="text-sm lg:text-base leading-relaxed">
@@ -27,8 +27,8 @@ export function ChatHistory({ chatHistory, isPending, chatEndRef }) {
       ))}
       {isPending && (
         <div className="flex justify-start">
-          <div className="bg-white dark:bg-[#1E1E1E] p-4 rounded-3xl rounded-tl-none border border-[#EDEDED] dark:border-[#333333] shadow-sm">
-            <Loader2 className="animate-spin text-[#219079]" size={20} />
+          <div className="bg-white dark:bg-slate-surface p-4 rounded-3xl rounded-tl-none border border-gray-100 dark:border-slate-700 shadow-sm">
+            <Loader2 className="animate-spin text-teal-700" size={20} />
           </div>
         </div>
       )}

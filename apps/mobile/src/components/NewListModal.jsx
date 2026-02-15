@@ -38,7 +38,7 @@ export function NewListModal({
           <View style={styles.header}>
             <Text style={styles.title}>Create New List</Text>
             <TouchableOpacity onPress={onClose}>
-              <X size={24} color="#70757F" />
+              <X size={24} color="#6B7280" />
             </TouchableOpacity>
           </View>
 
@@ -51,7 +51,7 @@ export function NewListModal({
                   value={newListName}
                   onChangeText={setNewListName}
                   placeholder="e.g. Travel Bucket List"
-                  placeholderTextColor="#B4B4B4"
+                  placeholderTextColor="#9CA3AF"
                 />
                 <TouchableOpacity
                   style={[styles.primaryBtn, !newListName.trim() && styles.btnDisabled]}
@@ -78,7 +78,7 @@ export function NewListModal({
                   value={newListPurpose}
                   onChangeText={setNewListPurpose}
                   placeholder="e.g. This list is for places I want to visit..."
-                  placeholderTextColor="#B4B4B4"
+                  placeholderTextColor="#9CA3AF"
                   multiline
                   textAlignVertical="top"
                 />
@@ -148,21 +148,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 20,
   },
-  title: { fontSize: 22, fontWeight: '700', color: '#1E1E1E' },
+  title: { fontSize: 22, fontWeight: '700', color: '#1F2937' },
   stepContent: { gap: 16 },
-  label: { fontSize: 13, fontWeight: '500', color: '#70757F' },
+  label: { fontSize: 13, fontWeight: '500', color: '#6B7280' },
   input: {
-    backgroundColor: '#F7F7F7',
+    backgroundColor: '#FFFBEB',
     borderRadius: 16,
     paddingHorizontal: 18,
     paddingVertical: 14,
     fontSize: 16,
-    color: '#1E1E1E',
+    color: '#1F2937',
   },
   textarea: { minHeight: 100 },
   primaryBtn: {
     flexDirection: 'row',
-    backgroundColor: '#219079',
+    backgroundColor: '#0F766E',
     paddingVertical: 14,
     borderRadius: 16,
     alignItems: 'center',
@@ -172,40 +172,40 @@ const styles = StyleSheet.create({
   btnDisabled: { opacity: 0.5 },
   primaryBtnText: { color: '#fff', fontSize: 16, fontWeight: '700' },
   hint: {
-    backgroundColor: 'rgba(33,144,121,0.05)',
+    backgroundColor: 'rgba(15,118,110,0.08)',
     borderWidth: 1,
-    borderColor: 'rgba(33,144,121,0.2)',
+    borderColor: 'rgba(15,118,110,0.2)',
     borderRadius: 16,
     padding: 14,
   },
-  hintText: { fontSize: 13, color: '#219079' },
+  hintText: { fontSize: 13, color: '#0F766E' },
   smallLabel: {
     fontSize: 10,
     fontWeight: '700',
-    color: '#A8ADB4',
+    color: '#9CA3AF',
     textTransform: 'uppercase',
     letterSpacing: 1,
   },
-  ruleDesc: { fontSize: 14, color: '#1E1E1E', marginTop: 4 },
+  ruleDesc: { fontSize: 14, color: '#1F2937', marginTop: 4 },
   rulesBox: {
-    backgroundColor: '#F7F7F7',
+    backgroundColor: '#FFFBEB',
     borderRadius: 16,
     padding: 14,
     gap: 8,
   },
-  rulesText: { fontSize: 12, color: '#70757F', fontStyle: 'italic' },
+  rulesText: { fontSize: 12, color: '#6B7280', fontStyle: 'italic' },
   btnRow: { flexDirection: 'row', gap: 12, marginTop: 8 },
   secondaryBtn: {
     flex: 1,
-    backgroundColor: '#F1F1F1',
+    backgroundColor: '#F3F4F6',
     paddingVertical: 14,
     borderRadius: 16,
     alignItems: 'center',
   },
-  secondaryBtnText: { fontSize: 16, fontWeight: '700', color: '#1E1E1E' },
+  secondaryBtnText: { fontSize: 16, fontWeight: '700', color: '#1F2937' },
   createBtn: {
     flex: 2,
-    backgroundColor: '#219079',
+    backgroundColor: '#0F766E',
     paddingVertical: 14,
     borderRadius: 16,
     alignItems: 'center',

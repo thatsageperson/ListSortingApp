@@ -20,9 +20,9 @@ import { SettingsModal } from "@/components/Modals/SettingsModal";
 import { useSettings } from "@/hooks/useSettings";
 
 /**
- * Main SmartLists page: sidebar, chat/list view, modals, and guest mode support.
+ * Main jot. page: sidebar, chat/list view, modals, and guest mode support.
  */
-export default function SmartListsPage() {
+export default function JotPage() {
   const chatEndRef = useRef(null);
   const [activeTab, setActiveTab] = useState("chat");
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -199,8 +199,8 @@ export default function SmartListsPage() {
   // Show loading or redirect to signin if not authenticated
   if (userLoading && !isGuestMode) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#F9F9F9] dark:bg-[#0A0A0A]">
-        <Loader2 className="animate-spin text-[#219079]" size={48} />
+      <div className="min-h-screen flex items-center justify-center bg-cream dark:bg-slate-bg">
+        <Loader2 className="animate-spin text-teal-700" size={48} />
       </div>
     );
   }
@@ -213,7 +213,7 @@ export default function SmartListsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white dark:bg-[#121212] font-sans flex">
+    <div className="min-h-screen bg-cream dark:bg-slate-bg font-sans flex">
       <MobileHeader
         setSidebarOpen={setSidebarOpen}
         darkMode={darkMode}
@@ -222,16 +222,16 @@ export default function SmartListsPage() {
 
       {/* Guest Mode Banner */}
       {isGuestMode && (
-        <div className="fixed top-16 lg:top-0 left-0 right-0 bg-gradient-to-r from-[#219079] to-[#1a7359] text-white py-3 px-6 flex items-center justify-between z-50 lg:ml-64">
+        <div className="fixed top-16 lg:top-0 left-0 right-0 bg-gradient-to-r from-teal-700 to-teal-800 text-white py-3 px-6 flex items-center justify-between z-50 lg:ml-64">
           <div className="flex items-center gap-2">
             <UserPlus size={20} />
             <span className="text-sm font-medium">
-              You're using Guest Mode. Sign up to save your lists permanently!
+              You're using Guest Mode. Sign up to save your jot. lists permanently.
             </span>
           </div>
           <a
             href="/account/signup"
-            className="bg-white text-[#219079] px-4 py-2 rounded-xl font-bold text-sm hover:bg-gray-100 transition-all"
+            className="bg-white text-teal-700 px-4 py-2 rounded-xl font-bold text-sm hover:bg-gray-100 transition-all"
           >
             Sign Up
           </a>
@@ -261,7 +261,7 @@ export default function SmartListsPage() {
       />
 
       {/* Main Content */}
-      <div className="flex-1 lg:ml-64 flex flex-col h-screen pt-16 lg:pt-0 bg-[#F9F9F9] dark:bg-[#0A0A0A]">
+      <div className="flex-1 lg:ml-64 flex flex-col h-screen pt-16 lg:pt-0 bg-cream dark:bg-slate-bg">
         <div
           className={`flex-1 overflow-y-auto px-6 py-8 lg:px-12 lg:py-12 ${isGuestMode ? "pt-20 lg:pt-20" : ""}`}
         >

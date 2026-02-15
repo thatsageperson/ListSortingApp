@@ -39,7 +39,7 @@ export default function RootLayout() {
   if (!isReady) {
     return (
       <View style={styles.loading}>
-        <ActivityIndicator size="large" color="#111" />
+        <ActivityIndicator size="large" color="#0F766E" />
       </View>
     );
   }
@@ -62,6 +62,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: '#FFFBEB',
   },
 });

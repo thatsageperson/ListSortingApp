@@ -35,7 +35,7 @@ const DARK_MODE_OPTIONS = [
 
 function SectionHeader({ children }) {
   return (
-    <h3 className="text-xs font-bold text-[#A8ADB4] uppercase tracking-wider mt-6 mb-3 first:mt-0">
+    <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mt-6 mb-3 first:mt-0">
       {children}
     </h3>
   );
@@ -43,8 +43,8 @@ function SectionHeader({ children }) {
 
 function SettingRow({ label, children }) {
   return (
-    <div className="flex items-center justify-between py-3 border-b border-[#EDEDED] dark:border-[#333333] last:border-b-0">
-      <span className="text-sm text-[#1E1E1E] dark:text-white">{label}</span>
+    <div className="flex items-center justify-between py-3 border-b border-gray-200 dark:border-slate-700 last:border-b-0">
+      <span className="text-sm text-charcoal dark:text-white">{label}</span>
       <div className="flex items-center">{children}</div>
     </div>
   );
@@ -55,7 +55,7 @@ function Toggle({ checked, onChange }) {
     <button
       onClick={() => onChange(!checked)}
       className={`w-11 h-6 rounded-full transition-colors relative ${
-        checked ? "bg-[#219079]" : "bg-[#E2E2E2] dark:bg-[#333333]"
+        checked ? "bg-teal-700" : "bg-gray-200 dark:bg-slate-700"
       }`}
     >
       <span
@@ -72,7 +72,7 @@ function Select({ value, onChange, options }) {
     <select
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className="bg-[#F7F7F7] dark:bg-[#262626] text-[#1E1E1E] dark:text-white text-sm py-1.5 px-3 rounded-xl border border-[#EDEDED] dark:border-[#333333] outline-none"
+      className="bg-cream dark:bg-slate-800 text-charcoal dark:text-white text-sm py-1.5 px-3 rounded-xl border border-gray-200 dark:border-slate-700 outline-none"
     >
       {options.map((opt) => (
         <option key={opt.value} value={opt.value}>
@@ -90,20 +90,20 @@ export function SettingsModal({ isOpen, onClose }) {
 
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center p-6 bg-black/60 backdrop-blur-sm">
-      <div className="bg-white dark:bg-[#1E1E1E] w-full max-w-lg rounded-3xl p-8 shadow-2xl max-h-[85vh] flex flex-col">
+      <div className="bg-white dark:bg-slate-surface w-full max-w-lg rounded-3xl p-8 shadow-2xl max-h-[85vh] flex flex-col">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-2xl font-bold dark:text-white">Settings</h2>
           <div className="flex items-center gap-2">
             <button
               onClick={resetSettings}
-              className="text-[#70757F] hover:text-[#1E1E1E] dark:hover:text-white p-1"
+              className="text-gray-500 hover:text-charcoal dark:hover:text-white p-1"
               title="Reset to defaults"
             >
               <RotateCcw size={18} />
             </button>
             <button
               onClick={onClose}
-              className="text-[#70757F] hover:text-[#1E1E1E] dark:hover:text-white"
+              className="text-gray-500 hover:text-charcoal dark:hover:text-white"
             >
               <X size={24} />
             </button>
@@ -179,7 +179,7 @@ export function SettingsModal({ isOpen, onClose }) {
           <div className="py-3">
             <a
               href="/account/signin"
-              className="text-sm text-[#219079] hover:underline"
+              className="text-sm text-teal-700 hover:underline"
             >
               Manage Account
             </a>

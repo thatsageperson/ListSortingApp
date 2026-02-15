@@ -487,10 +487,14 @@ export function Layout({ children }: { children: ReactNode }) {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>jot. - AI-Powered List Organization</title>
+        <meta name="description" content="Smart list management with AI categorization." />
+        <meta name="theme-color" content="#0F766E" />
         <Meta />
         <Links />
         <script type="module" src="/src/__create/dev-error-overlay.js"></script>
-        <link rel="icon" href="/src/__create/favicon.png" />
+        <link rel="icon" type="image/svg+xml" href="/jot-logo-primary.svg" />
+        <link rel="apple-touch-icon" href="/jot-app-icon.svg" />
         {LoadFontsSSR ? <LoadFontsSSR /> : null}
       </head>
       <body>

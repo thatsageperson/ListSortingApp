@@ -1,6 +1,7 @@
 {
   "expo": {
-    "name": "Anything mobile app",
+    "name": "jot.",
+    "slug": "jot",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -15,7 +16,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#FFFBEB"
       },
       "permissions": [
         "android.permission.RECORD_AUDIO",
@@ -35,7 +36,8 @@
         {
           "image": "./assets/images/splash-icon.png",
           "imageWidth": 200,
-          "resizeMode": "contain"
+          "resizeMode": "contain",
+          "backgroundColor": "#FFFBEB"
         }
       ],
       "expo-audio",
@@ -69,6 +71,7 @@
     },
     "runtimeVersion": {
       "policy": "appVersion"
-    }
+    },
+    "primaryColor": "#0F766E"
   }
 }

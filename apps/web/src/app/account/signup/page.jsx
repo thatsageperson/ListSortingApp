@@ -1,6 +1,6 @@
 import { useState } from "react";
 import useAuth from "@/utils/useAuth";
-import { BrainCircuit } from "lucide-react";
+import { Logo } from "@/components/Logo";
 
 /**
  * Sign-up page: email/password and Google/Apple OAuth registration.
@@ -78,20 +78,20 @@ export default function SignUpPage() {
   };
 
   return (
-    <div className="flex min-h-screen w-full items-center justify-center bg-[#F9F9F9] dark:bg-[#0A0A0A] p-6">
+    <div className="flex min-h-screen w-full items-center justify-center bg-cream dark:bg-slate-bg p-6">
       <form
         noValidate
         onSubmit={onSubmit}
-        className="w-full max-w-md rounded-3xl bg-white dark:bg-[#1E1E1E] p-8 shadow-2xl border border-[#EDEDED] dark:border-[#333333]"
+        className="w-full max-w-md rounded-3xl bg-white dark:bg-slate-surface p-8 shadow-2xl border border-gray-200 dark:border-slate-700"
       >
         <div className="flex items-center justify-center mb-8">
-          <BrainCircuit className="w-12 h-12 text-[#219079]" />
+          <Logo size="medium" />
         </div>
-        <h1 className="mb-2 text-center text-3xl font-bold text-[#1E1E1E] dark:text-white">
+        <h1 className="mb-2 text-center text-3xl font-bold text-charcoal dark:text-white">
           Create Account
         </h1>
-        <p className="mb-8 text-center text-[#70757F]">
-          Start organizing with SmartLists
+        <p className="mb-8 text-center text-gray-500">
+          Start organizing with jot.
         </p>
 
         <div className="space-y-6">
@@ -100,7 +100,7 @@ export default function SignUpPage() {
             <button
               type="button"
               onClick={handleGoogleSignUp}
-              className="w-full flex items-center justify-center gap-3 rounded-2xl border-2 border-[#EDEDED] dark:border-[#333333] bg-white dark:bg-[#262626] px-4 py-3 text-base font-medium text-[#1E1E1E] dark:text-white transition-all hover:bg-[#F7F7F7] dark:hover:bg-[#1E1E1E]"
+              className="w-full flex items-center justify-center gap-3 rounded-2xl border-2 border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-3 text-base font-medium text-charcoal dark:text-white transition-all hover:bg-cream dark:hover:bg-slate-700"
             >
               <svg className="h-5 w-5" viewBox="0 0 24 24">
                 <path
@@ -136,17 +136,17 @@ export default function SignUpPage() {
 
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-[#EDEDED] dark:border-[#333333]"></div>
+              <div className="w-full border-t border-gray-200 dark:border-slate-700"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="bg-white dark:bg-[#1E1E1E] px-4 text-[#70757F]">
+              <span className="bg-white dark:bg-slate-surface px-4 text-gray-500">
                 Or continue with email
               </span>
             </div>
           </div>
 
           <div className="space-y-2">
-            <label className="block text-sm font-medium text-[#70757F]">
+            <label className="block text-sm font-medium text-gray-500">
               Email
             </label>
             <input
@@ -156,11 +156,11 @@ export default function SignUpPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your email"
-              className="w-full bg-[#F7F7F7] dark:bg-[#262626] border-none rounded-2xl px-6 py-4 text-lg outline-none focus:ring-2 ring-[#219079] dark:text-white"
+              className="w-full bg-cream dark:bg-slate-800 border-none rounded-2xl px-6 py-4 text-lg outline-none focus:ring-2 ring-teal-700 dark:text-white"
             />
           </div>
           <div className="space-y-2">
-            <label className="block text-sm font-medium text-[#70757F]">
+            <label className="block text-sm font-medium text-gray-500">
               Password
             </label>
             <input
@@ -169,7 +169,7 @@ export default function SignUpPage() {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full bg-[#F7F7F7] dark:bg-[#262626] border-none rounded-2xl px-6 py-4 text-lg outline-none focus:ring-2 ring-[#219079] dark:text-white"
+              className="w-full bg-cream dark:bg-slate-800 border-none rounded-2xl px-6 py-4 text-lg outline-none focus:ring-2 ring-teal-700 dark:text-white"
               placeholder="Create a password"
             />
           </div>
@@ -183,15 +183,15 @@ export default function SignUpPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-[#219079] text-white py-4 rounded-2xl font-bold transition-all hover:bg-[#1a7359] disabled:opacity-50 shadow-lg shadow-[#219079]/20"
+            className="w-full bg-teal-700 text-white py-4 rounded-2xl font-bold transition-all hover:bg-teal-800 disabled:opacity-50 shadow-lg shadow-teal-700/20"
           >
             {loading ? "Creating account..." : "Sign Up"}
           </button>
-          <p className="text-center text-sm text-[#70757F]">
+          <p className="text-center text-sm text-gray-500">
             Already have an account?{" "}
             <a
               href={`/account/signin${typeof window !== "undefined" ? window.location.search : ""}`}
-              className="text-[#219079] hover:text-[#1a7359] font-medium"
+              className="text-teal-700 hover:text-teal-800 font-medium"
             >
               Sign in
             </a>

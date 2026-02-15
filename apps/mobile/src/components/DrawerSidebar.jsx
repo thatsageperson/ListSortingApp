@@ -48,9 +48,9 @@ export function DrawerSidebar({
       )}
       <Animated.View style={[styles.drawer, { transform: [{ translateX }] }]}>
         <View style={styles.header}>
-          <Text style={styles.brand}>SmartLists</Text>
+          <Text style={styles.brand}>jot.</Text>
           <TouchableOpacity onPress={onClose}>
-            <X size={22} color="#70757F" />
+            <X size={22} color="#6B7280" />
           </TouchableOpacity>
         </View>
 
@@ -64,7 +64,7 @@ export function DrawerSidebar({
             style={[styles.navItem, activeTab === 'chat' && styles.navItemActive]}
             onPress={() => nav('chat')}
           >
-            <MessageSquare size={18} color={activeTab === 'chat' ? '#1E1E1E' : '#A8ADB4'} />
+            <MessageSquare size={18} color={activeTab === 'chat' ? '#0F766E' : '#9CA3AF'} />
             <Text style={[styles.navText, activeTab === 'chat' && styles.navTextActive]}>
               Add Items
             </Text>
@@ -77,7 +77,7 @@ export function DrawerSidebar({
                 style={[styles.navItem, styles.listNavItem, activeTab === String(list.id) && styles.navItemActive]}
                 onPress={() => nav(String(list.id))}
               >
-                <List size={18} color={activeTab === String(list.id) ? '#1E1E1E' : '#A8ADB4'} />
+                <List size={18} color={activeTab === String(list.id) ? '#0F766E' : '#9CA3AF'} />
                 <Text
                   style={[styles.navText, activeTab === String(list.id) && styles.navTextActive]}
                   numberOfLines={1}
@@ -89,7 +89,7 @@ export function DrawerSidebar({
                 style={styles.deleteBtn}
                 onPress={() => onDeleteList(list.id)}
               >
-                <Trash2 size={14} color="#70757F" />
+                <Trash2 size={14} color="#6B7280" />
               </TouchableOpacity>
             </View>
           ))}
@@ -97,15 +97,15 @@ export function DrawerSidebar({
 
         <View style={styles.footer}>
           <TouchableOpacity style={styles.footerItem} onPress={() => { onHome(); onClose(); }}>
-            <Home size={18} color="#A8ADB4" />
+            <Home size={18} color="#9CA3AF" />
             <Text style={styles.footerText}>Home</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.footerItem} onPress={() => { onSettings(); onClose(); }}>
-            <Settings size={18} color="#A8ADB4" />
+            <Settings size={18} color="#9CA3AF" />
             <Text style={styles.footerText}>Settings</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.footerItem} onPress={() => { onSignOut(); onClose(); }}>
-            <LogOut size={18} color="#A8ADB4" />
+            <LogOut size={18} color="#9CA3AF" />
             <Text style={styles.footerText}>Sign Out</Text>
           </TouchableOpacity>
         </View>
@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
     left: 0,
     bottom: 0,
     width: DRAWER_WIDTH,
-    backgroundColor: '#fff',
+    backgroundColor: '#FFFFFF',
     zIndex: 50,
     paddingTop: 60,
     paddingHorizontal: 16,
@@ -141,12 +141,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 20,
   },
-  brand: { fontSize: 22, fontWeight: '800', color: '#1E1E1E' },
+  brand: { fontSize: 22, fontWeight: '800', color: '#0F766E' },
   newBtn: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#219079',
+    backgroundColor: '#0F766E',
     paddingVertical: 12,
     borderRadius: 14,
     gap: 8,
@@ -162,14 +162,14 @@ const styles = StyleSheet.create({
     borderRadius: 14,
     gap: 10,
   },
-  navItemActive: { backgroundColor: '#F1F1F1' },
+  navItemActive: { backgroundColor: '#FFFBEB' },
   listNavItem: { flex: 1 },
-  navText: { fontSize: 14, color: '#70757F' },
-  navTextActive: { color: '#1E1E1E', fontWeight: '700' },
+  navText: { fontSize: 14, color: '#6B7280' },
+  navTextActive: { color: '#1F2937', fontWeight: '700' },
   sectionTitle: {
     fontSize: 10,
     fontWeight: '700',
-    color: '#A8ADB4',
+    color: '#9CA3AF',
     letterSpacing: 1,
     marginTop: 20,
     marginBottom: 8,
@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
   deleteBtn: { padding: 8 },
   footer: {
     borderTopWidth: 1,
-    borderTopColor: '#EDEDED',
+    borderTopColor: '#F3F4F6',
     paddingTop: 12,
     paddingBottom: 20,
     gap: 4,
@@ -191,5 +191,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     gap: 10,
   },
-  footerText: { fontSize: 14, color: '#70757F' },
+  footerText: { fontSize: 14, color: '#6B7280' },
 });

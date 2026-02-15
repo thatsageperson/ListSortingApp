@@ -53,7 +53,7 @@ export function ListView({
 
       {isLoadingItems ? (
         <div className="flex justify-center py-12">
-          <Loader2 className="animate-spin text-[#219079]" size={32} />
+          <Loader2 className="animate-spin text-teal-700" size={32} />
         </div>
       ) : items.length > 0 ? (
         <div className={DENSITY_CLASSES[listDensity] || "space-y-3"}>
@@ -68,8 +68,8 @@ export function ListView({
           ))}
         </div>
       ) : (
-        <div className="text-center py-20 bg-white dark:bg-[#1E1E1E] rounded-3xl border-2 border-dashed border-[#EDEDED] dark:border-[#333333]">
-          <p className="text-[#70757F]">
+        <div className="text-center py-20 bg-white dark:bg-slate-surface rounded-3xl border-2 border-dashed border-gray-200 dark:border-slate-700">
+          <p className="text-gray-500">
             This list is empty. Add items in the chat!
           </p>
         </div>

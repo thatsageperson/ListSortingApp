@@ -12,7 +12,7 @@ const DISPLAY_MODES = [
 
 const getPriorityStyle = (priority) => {
   if (priority === 'high') return { color: '#EF4444', bg: '#FEF2F2' };
-  if (priority === 'medium') return { color: '#F97316', bg: '#FFF7ED' };
+  if (priority === 'medium') return { color: '#FB923C', bg: '#FFF7ED' };
   if (priority === 'low') return { color: '#3B82F6', bg: '#EFF6FF' };
   return null;
 };
@@ -32,8 +32,8 @@ export function ListItem({ item, onUpdate, onDelete }) {
   const priority = getPriorityStyle(item.priority);
 
   const renderIcon = () => {
-    if (mode === 'log-clock') return <Clock size={16} color="#219079" />;
-    if (mode === 'bullet') return <Circle size={8} color="#70757F" fill="#70757F" />;
+    if (mode === 'log-clock') return <Clock size={16} color="#0F766E" />;
+    if (mode === 'bullet') return <Circle size={8} color="#6B7280" fill="#6B7280" />;
     return (
       <TouchableOpacity
         onPress={() => onUpdate({ itemId: item.id, completed: !item.completed })}
@@ -63,10 +63,10 @@ export function ListItem({ item, onUpdate, onDelete }) {
       </View>
       <View style={styles.actions}>
         <TouchableOpacity onPress={() => setMenuOpen(true)} style={styles.actionBtn}>
-          <MoreVertical size={16} color="#70757F" />
+          <MoreVertical size={16} color="#6B7280" />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => onDelete(item.id)} style={styles.actionBtn}>
-          <Trash2 size={16} color="#70757F" />
+          <Trash2 size={16} color="#6B7280" />
         </TouchableOpacity>
       </View>
 
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
     padding: 14,
     borderRadius: 16,
     borderWidth: 1,
-    borderColor: '#EDEDED',
+    borderColor: '#F3F4F6',
     marginBottom: 10,
   },
   iconCol: { width: 28, alignItems: 'center', marginTop: 2 },
@@ -112,19 +112,19 @@ const styles = StyleSheet.create({
     height: 24,
     borderRadius: 8,
     borderWidth: 2,
-    borderColor: '#E2E2E2',
+    borderColor: '#D1D5DB',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  checkboxChecked: { backgroundColor: '#219079', borderColor: '#219079' },
+  checkboxChecked: { backgroundColor: '#0F766E', borderColor: '#0F766E' },
   content: { flex: 1, marginLeft: 8 },
-  text: { fontSize: 15, color: '#1E1E1E' },
+  text: { fontSize: 15, color: '#1F2937' },
   strikethrough: { textDecorationLine: 'line-through', opacity: 0.5 },
-  notes: { fontSize: 13, color: '#70757F', marginTop: 2 },
+  notes: { fontSize: 13, color: '#6B7280', marginTop: 2 },
   meta: { flexDirection: 'row', alignItems: 'center', gap: 8, marginTop: 4 },
   badge: { paddingHorizontal: 8, paddingVertical: 2, borderRadius: 6 },
   badgeText: { fontSize: 10, fontWeight: '600' },
-  timestamp: { fontSize: 11, color: '#70757F' },
+  timestamp: { fontSize: 11, color: '#6B7280' },
   actions: { flexDirection: 'row', gap: 4, marginLeft: 8 },
   actionBtn: { padding: 4 },
   menuOverlay: {
@@ -139,8 +139,8 @@ const styles = StyleSheet.create({
     padding: 16,
     width: 240,
   },
-  menuTitle: { fontSize: 12, fontWeight: '700', color: '#A8ADB4', marginBottom: 8, textTransform: 'uppercase' },
+  menuTitle: { fontSize: 12, fontWeight: '700', color: '#9CA3AF', marginBottom: 8, textTransform: 'uppercase' },
   menuItem: { paddingVertical: 10 },
-  menuItemText: { fontSize: 14, color: '#1E1E1E' },
-  menuItemActive: { color: '#219079', fontWeight: '600' },
+  menuItemText: { fontSize: 14, color: '#1F2937' },
+  menuItemActive: { color: '#0F766E', fontWeight: '600' },
 });

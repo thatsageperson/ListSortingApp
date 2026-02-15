@@ -5,7 +5,7 @@ export function ChatWelcome() {
   return (
     <View style={styles.container}>
       <View style={styles.iconWrap}>
-        <BrainCircuit size={32} color="#219079" />
+        <BrainCircuit size={32} color="#0F766E" />
       </View>
       <Text style={styles.title}>What can I organize for you?</Text>
       <Text style={styles.subtitle}>
@@ -22,11 +22,11 @@ const styles = StyleSheet.create({
     width: 64,
     height: 64,
     borderRadius: 20,
-    backgroundColor: 'rgba(33,144,121,0.1)',
+    backgroundColor: 'rgba(15,118,110,0.1)',
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 24,
   },
-  title: { fontSize: 26, fontWeight: '700', color: '#1E1E1E', textAlign: 'center', marginBottom: 8 },
-  subtitle: { fontSize: 14, color: '#70757F', textAlign: 'center', marginBottom: 24, maxWidth: 300 },
+  title: { fontSize: 26, fontWeight: '700', color: '#1F2937', textAlign: 'center', marginBottom: 8 },
+  subtitle: { fontSize: 14, color: '#6B7280', textAlign: 'center', marginBottom: 24, maxWidth: 300 },
 });

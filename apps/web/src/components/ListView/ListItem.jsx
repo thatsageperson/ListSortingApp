@@ -61,14 +61,14 @@ export function ListItem({ item, onUpdate, onDelete, density = "comfortable" }) 
     if (mode === "log-clock") {
       return (
         <div className="w-6 h-6 flex items-center justify-center shrink-0 mt-0.5">
-          <Clock size={16} className="text-[#219079]" />
+          <Clock size={16} className="text-teal-700" />
         </div>
       );
     }
     if (mode === "bullet") {
       return (
         <div className="w-6 h-6 flex items-center justify-center shrink-0 mt-0.5">
-          <Circle size={8} className="text-[#70757F] fill-current" />
+          <Circle size={8} className="text-gray-500 fill-current" />
         </div>
       );
     }
@@ -78,8 +78,8 @@ export function ListItem({ item, onUpdate, onDelete, density = "comfortable" }) 
         onClick={() => onUpdate({ itemId: item.id, completed: !item.completed })}
         className={`w-6 h-6 rounded-lg border-2 flex items-center justify-center transition-all shrink-0 mt-0.5 ${
           item.completed
-            ? "bg-[#219079] border-[#219079]"
-            : "border-[#E2E2E2] dark:border-[#333333] hover:border-[#219079]"
+            ? "bg-teal-700 border-teal-700"
+            : "border-gray-200 dark:border-slate-700 hover:border-teal-700"
         }`}
       >
         {item.completed && <Check size={14} className="text-white" />}
@@ -88,17 +88,17 @@ export function ListItem({ item, onUpdate, onDelete, density = "comfortable" }) 
   };
 
   return (
-    <div className={`bg-white dark:bg-[#1E1E1E] ${DENSITY_PADDING[density] || "p-4"} rounded-2xl border border-[#EDEDED] dark:border-[#333333] flex items-start justify-between group`}>
+    <div className={`bg-white dark:bg-slate-surface ${DENSITY_PADDING[density] || "p-4"} rounded-2xl border border-gray-100 dark:border-slate-700 flex items-start justify-between group`}>
       <div className="flex items-start gap-3 flex-1">
         {renderIcon()}
         <div className="flex-1 min-w-0">
           <span
-            className={`text-[#1E1E1E] dark:text-white block ${isStrikethrough ? "line-through opacity-50" : ""}`}
+            className={`text-charcoal dark:text-white block ${isStrikethrough ? "line-through opacity-50" : ""}`}
           >
             {item.content}
           </span>
           {item.notes && (
-            <span className="text-sm text-[#70757F] dark:text-[#9BA1AD] block mt-0.5">
+            <span className="text-sm text-gray-500 dark:text-gray-400 block mt-0.5">
               {item.notes}
             </span>
           )}
@@ -111,7 +111,7 @@ export function ListItem({ item, onUpdate, onDelete, density = "comfortable" }) 
               </span>
             )}
             {item.created_at && (
-              <span className="text-xs text-[#70757F]">
+              <span className="text-xs text-gray-500">
                 {formatTimestamp(item.created_at)}
               </span>
             )}
@@ -122,12 +122,12 @@ export function ListItem({ item, onUpdate, onDelete, density = "comfortable" }) 
         <div className="relative" ref={menuRef}>
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className="text-[#70757F] opacity-0 group-hover:opacity-100 hover:text-[#1E1E1E] dark:hover:text-white transition-opacity p-1"
+            className="text-gray-500 opacity-0 group-hover:opacity-100 hover:text-charcoal dark:hover:text-white transition-opacity p-1"
           >
             <MoreVertical size={16} />
           </button>
           {menuOpen && (
-            <div className="absolute right-0 top-8 bg-white dark:bg-[#262626] border border-[#EDEDED] dark:border-[#333333] rounded-xl shadow-lg z-10 py-1 w-52">
+            <div className="absolute right-0 top-8 bg-white dark:bg-slate-surface border border-gray-100 dark:border-slate-700 rounded-xl shadow-lg z-10 py-1 w-52">
               {DISPLAY_MODES.map((opt) => (
                 <button
                   key={opt.value}
@@ -135,10 +135,10 @@ export function ListItem({ item, onUpdate, onDelete, density = "comfortable" }) 
                     onUpdate({ itemId: item.id, display_mode: opt.value });
                     setMenuOpen(false);
                   }}
-                  className={`w-full text-left px-4 py-2 text-sm hover:bg-[#F7F7F7] dark:hover:bg-[#333333] transition-colors ${
+                  className={`w-full text-left px-4 py-2 text-sm hover:bg-cream dark:hover:bg-slate-800 transition-colors ${
                     mode === opt.value
-                      ? "text-[#219079] font-medium"
-                      : "text-[#1E1E1E] dark:text-white"
+                      ? "text-teal-700 font-medium"
+                      : "text-charcoal dark:text-white"
                   }`}
                 >
                   {opt.label}
@@ -149,7 +149,7 @@ export function ListItem({ item, onUpdate, onDelete, density = "comfortable" }) 
         </div>
         <button
           onClick={() => onDelete(item.id)}
-          className="text-[#70757F] opacity-0 group-hover:opacity-100 hover:text-red-500 transition-opacity p-1"
+          className="text-gray-500 opacity-0 group-hover:opacity-100 hover:text-red-500 transition-opacity p-1"
         >
           <Trash2 size={16} />
         </button>

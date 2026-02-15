@@ -94,7 +94,7 @@ export default function Main() {
   };
 
   const activeList = lists.find((l) => String(l.id) === activeTab);
-  const headerTitle = showSettings ? 'Settings' : activeTab === 'chat' ? 'SmartLists' : activeList?.name || 'List';
+  const headerTitle = showSettings ? 'Settings' : activeTab === 'chat' ? 'jot.' : activeList?.name || 'List';
 
   return (
     <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
@@ -106,7 +106,7 @@ export default function Main() {
         {/* Header */}
         <View style={styles.header}>
           <TouchableOpacity onPress={() => setSidebarOpen(true)} style={styles.menuBtn}>
-            <Menu size={24} color="#1E1E1E" />
+            <Menu size={24} color="#1F2937" />
           </TouchableOpacity>
           <Text style={styles.headerTitle} numberOfLines={1}>{headerTitle}</Text>
           <View style={styles.menuBtn} />
@@ -181,7 +181,7 @@ export default function Main() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#F9F9F9' },
+  container: { flex: 1, backgroundColor: '#FFFBEB' },
   flex: { flex: 1 },
   header: {
     flexDirection: 'row',
@@ -189,11 +189,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 16,
     paddingVertical: 12,
-    backgroundColor: '#fff',
+    backgroundColor: '#FFFFFF',
     borderBottomWidth: 1,
-    borderBottomColor: '#EDEDED',
+    borderBottomColor: '#F3F4F6',
   },
   menuBtn: { width: 40, height: 40, alignItems: 'center', justifyContent: 'center' },
-  headerTitle: { fontSize: 18, fontWeight: '700', color: '#1E1E1E', flex: 1, textAlign: 'center' },
+  headerTitle: { fontSize: 18, fontWeight: '700', color: '#1F2937', flex: 1, textAlign: 'center' },
   content: { flex: 1 },
 });

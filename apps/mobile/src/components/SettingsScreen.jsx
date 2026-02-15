@@ -90,7 +90,7 @@ export function SettingsScreen() {
         <Switch
           value={settings.showCompleted}
           onValueChange={(v) => updateSetting("showCompleted", v)}
-          trackColor={{ true: "#219079" }}
+          trackColor={{ true: "#0F766E" }}
         />
       </SettingRow>
       <SettingRow label="Default Sort">
@@ -121,7 +121,7 @@ export function SettingsScreen() {
         <Switch
           value={settings.exportIncludeCompleted}
           onValueChange={(v) => updateSetting("exportIncludeCompleted", v)}
-          trackColor={{ true: "#219079" }}
+          trackColor={{ true: "#0F766E" }}
         />
       </SettingRow>
     </ScrollView>
@@ -129,13 +129,13 @@ export function SettingsScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#F9F9F9" },
+  container: { flex: 1, backgroundColor: "#FFFBEB" },
   content: { padding: 20, paddingBottom: 40 },
-  title: { fontSize: 24, fontWeight: "800", color: "#1E1E1E", marginBottom: 20 },
+  title: { fontSize: 24, fontWeight: "800", color: "#1F2937", marginBottom: 20 },
   sectionHeader: {
     fontSize: 11,
     fontWeight: "700",
-    color: "#A8ADB4",
+    color: "#9CA3AF",
     letterSpacing: 1,
     textTransform: "uppercase",
     marginTop: 24,
@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
     borderRadius: 14,
     marginBottom: 6,
   },
-  label: { fontSize: 14, color: "#1E1E1E", flex: 1 },
+  label: { fontSize: 14, color: "#1F2937", flex: 1 },
   control: { alignItems: "flex-end" },
   picker: { width: 160, height: 36 },
   pickerItem: { fontSize: 14 },

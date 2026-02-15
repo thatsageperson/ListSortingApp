@@ -10,7 +10,7 @@ export function ChatInput({ message, setMessage, onSend, isPending }) {
           value={message}
           onChangeText={setMessage}
           placeholder="Milk, eggs, finish report, call Sarah..."
-          placeholderTextColor="#B4B4B4"
+          placeholderTextColor="#9CA3AF"
           multiline
           editable={!isPending}
           onSubmitEditing={onSend}
@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingBottom: 16,
     paddingTop: 8,
-    backgroundColor: '#F9F9F9',
+    backgroundColor: '#FFFBEB',
   },
   inputRow: {
     flexDirection: 'row',
@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 28,
     borderWidth: 1,
-    borderColor: '#E2E2E2',
+    borderColor: '#F3F4F6',
     paddingLeft: 16,
     paddingRight: 6,
     paddingVertical: 6,
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     fontSize: 16,
-    color: '#1E1E1E',
+    color: '#1F2937',
     paddingVertical: 10,
     maxHeight: 100,
   },
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: 16,
-    backgroundColor: '#219079',
+    backgroundColor: '#FB923C',
     alignItems: 'center',
     justifyContent: 'center',
   },

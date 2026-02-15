@@ -12,31 +12,31 @@ export function ListHeader({
   return (
     <div className="flex items-center justify-between mb-8">
       <div>
-        <h1 className="text-3xl font-bold text-[#1E1E1E] dark:text-white">
+        <h1 className="text-3xl font-bold text-charcoal dark:text-white">
           {activeList?.name}
         </h1>
-        <p className="text-sm text-[#70757F] mt-1">{activeList?.description}</p>
+        <p className="text-sm text-gray-500 mt-1">{activeList?.description}</p>
       </div>
       <div className="flex gap-2">
         {onEditList && (
           <button
             onClick={onEditList}
-            className="p-3 bg-white dark:bg-[#1E1E1E] border border-[#EDEDED] dark:border-[#333333] rounded-2xl hover:bg-[#F7F7F7] dark:hover:bg-[#262626]"
+            className="p-3 bg-white dark:bg-slate-surface border border-gray-100 dark:border-slate-700 rounded-2xl hover:bg-cream dark:hover:bg-slate-800"
           >
-            <Pencil size={18} className="text-[#219079]" />
+            <Pencil size={18} className="text-teal-700" />
           </button>
         )}
         <button
           onClick={() => setIsShareModalOpen(true)}
-          className="p-3 bg-white dark:bg-[#1E1E1E] border border-[#EDEDED] dark:border-[#333333] rounded-2xl hover:bg-[#F7F7F7] dark:hover:bg-[#262626]"
+          className="p-3 bg-white dark:bg-slate-surface border border-gray-100 dark:border-slate-700 rounded-2xl hover:bg-cream dark:hover:bg-slate-800"
         >
-          <Share2 size={18} className="text-[#219079]" />
+          <Share2 size={18} className="text-teal-700" />
         </button>
         <button
           onClick={() => setIsExportModalOpen(true)}
-          className="p-3 bg-white dark:bg-[#1E1E1E] border border-[#EDEDED] dark:border-[#333333] rounded-2xl hover:bg-[#F7F7F7] dark:hover:bg-[#262626]"
+          className="p-3 bg-white dark:bg-slate-surface border border-gray-100 dark:border-slate-700 rounded-2xl hover:bg-cream dark:hover:bg-slate-800"
         >
-          <Download size={18} className="text-[#219079]" />
+          <Download size={18} className="text-teal-700" />
         </button>
       </div>
     </div>

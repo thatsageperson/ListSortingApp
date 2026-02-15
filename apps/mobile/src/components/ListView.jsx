@@ -10,7 +10,7 @@ export function ListView({ activeList, activeListItems, isLoadingItems, updateIt
       </View>
 
       {isLoadingItems ? (
-        <ActivityIndicator size="large" color="#219079" style={{ marginTop: 40 }} />
+        <ActivityIndicator size="large" color="#0F766E" style={{ marginTop: 40 }} />
       ) : activeListItems.length > 0 ? (
         <FlatList
           data={activeListItems}
@@ -36,8 +36,8 @@ export function ListView({ activeList, activeListItems, isLoadingItems, updateIt
 const styles = StyleSheet.create({
   container: { flex: 1 },
   header: { paddingHorizontal: 16, paddingTop: 16, paddingBottom: 8 },
-  title: { fontSize: 26, fontWeight: '700', color: '#1E1E1E' },
-  desc: { fontSize: 13, color: '#70757F', marginTop: 4 },
+  title: { fontSize: 26, fontWeight: '700', color: '#1F2937' },
+  desc: { fontSize: 13, color: '#6B7280', marginTop: 4 },
   list: { paddingHorizontal: 16, paddingTop: 8 },
   empty: {
     marginTop: 40,
@@ -47,8 +47,8 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     borderWidth: 2,
     borderStyle: 'dashed',
-    borderColor: '#EDEDED',
+    borderColor: '#F3F4F6',
     alignItems: 'center',
   },
-  emptyText: { color: '#70757F', fontSize: 14 },
+  emptyText: { color: '#6B7280', fontSize: 14 },
 });
