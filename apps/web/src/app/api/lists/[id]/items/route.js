@@ -5,14 +5,10 @@ import { auth } from "@/auth";
 export async function GET(request, { params }) {
   try {
     const session = await auth();
-    // TEMPORARILY DISABLED FOR TESTING
-    /*
     if (!session?.user?.id) {
       return Response.json({ error: "Unauthorized" }, { status: 401 });
     }
-    */
-
-    const userId = session?.user?.id || "test-user";
+    const userId = session.user.id;
 
     // Verify list ownership or sharing
     const [list] = await sql`
@@ -39,14 +35,10 @@ export async function GET(request, { params }) {
 export async function POST(request, { params }) {
   try {
     const session = await auth();
-    // TEMPORARILY DISABLED FOR TESTING
-    /*
     if (!session?.user?.id) {
       return Response.json({ error: "Unauthorized" }, { status: 401 });
     }
-    */
-
-    const userId = session?.user?.id || "test-user";
+    const userId = session.user.id;
 
     // Verify list ownership or edit permission
     const [list] = await sql`
@@ -85,14 +77,10 @@ export async function POST(request, { params }) {
 export async function PUT(request, { params }) {
   try {
     const session = await auth();
-    // TEMPORARILY DISABLED FOR TESTING
-    /*
     if (!session?.user?.id) {
       return Response.json({ error: "Unauthorized" }, { status: 401 });
     }
-    */
-
-    const userId = session?.user?.id || "test-user";
+    const userId = session.user.id;
 
     // Verify list ownership or edit permission
     const [list] = await sql`
@@ -160,14 +148,10 @@ export async function PUT(request, { params }) {
 export async function DELETE(request, { params }) {
   try {
     const session = await auth();
-    // TEMPORARILY DISABLED FOR TESTING
-    /*
     if (!session?.user?.id) {
       return Response.json({ error: "Unauthorized" }, { status: 401 });
     }
-    */
-
-    const userId = session?.user?.id || "test-user";
+    const userId = session.user.id;
 
     // Verify list ownership or edit permission
     const [list] = await sql`

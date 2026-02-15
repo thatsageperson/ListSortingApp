@@ -5,15 +5,10 @@ import { auth } from "@/auth";
 export async function GET() {
   try {
     const session = await auth();
-    // TEMPORARILY DISABLED FOR TESTING
-    /*
     if (!session?.user?.id) {
       return Response.json({ error: "Unauthorized" }, { status: 401 });
     }
-    */
-
-    // Use a test user ID when auth is disabled
-    const userId = session?.user?.id || "test-user";
+    const userId = session.user.id;
 
     // Get lists owned by the user
     const ownedLists = await sql`
@@ -44,15 +39,10 @@ export async function GET() {
 export async function POST(request) {
   try {
     const session = await auth();
-    // TEMPORARILY DISABLED FOR TESTING
-    /*
     if (!session?.user?.id) {
       return Response.json({ error: "Unauthorized" }, { status: 401 });
     }
-    */
-
-    // Use a test user ID when auth is disabled
-    const userId = session?.user?.id || "test-user";
+    const userId = session.user.id;
 
     const { name, description, rules } = await request.json();
     if (!name) {

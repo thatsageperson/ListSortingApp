@@ -5,14 +5,10 @@ import { auth } from "@/auth";
 export async function POST(request) {
   try {
     const session = await auth();
-    // TEMPORARILY DISABLED FOR TESTING
-    /*
     if (!session?.user?.id) {
       return Response.json({ error: "Unauthorized" }, { status: 401 });
     }
-    */
-
-    const userId = session?.user?.id || "test-user";
+    const userId = session.user.id;
 
     // #region agent log
     let body;

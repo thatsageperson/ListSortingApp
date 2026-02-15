@@ -70,7 +70,7 @@ export default function SmartListsPage() {
   // Get user first before using in queries
   const { data: user, loading: userLoading } = useUser();
 
-  // Queries
+  // Queries (only run when guest mode or authenticated so we avoid 401s before redirect)
   const { data: lists = [], isLoading: isLoadingLists } = useQuery({
     queryKey: ["lists", isGuestMode],
     queryFn: async () => {
@@ -82,8 +82,7 @@ export default function SmartListsPage() {
       if (!res.ok) throw new Error("Failed to fetch lists");
       return res.json();
     },
-    // TEMPORARILY ENABLED FOR TESTING - no auth required
-    enabled: true,
+    enabled: isGuestMode || !!user,
   });
 
   const { data: activeListItems = [], isLoading: isLoadingItems } = useQuery({
@@ -98,8 +97,7 @@ export default function SmartListsPage() {
       if (!res.ok) throw new Error("Failed to fetch items");
       return res.json();
     },
-    // TEMPORARILY ENABLED FOR TESTING - no auth required
-    enabled: activeTab !== "chat",
+    enabled: activeTab !== "chat" && (isGuestMode || !!user),
   });
 
   // Mutations
@@ -199,8 +197,6 @@ export default function SmartListsPage() {
   };
 
   // Show loading or redirect to signin if not authenticated
-  // TEMPORARILY DISABLED FOR TESTING
-  /*
   if (userLoading && !isGuestMode) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#F9F9F9] dark:bg-[#0A0A0A]">
@@ -215,7 +211,6 @@ export default function SmartListsPage() {
     }
     return null;
   }
-  */
 
   return (
     <div className="min-h-screen bg-white dark:bg-[#121212] font-sans flex">

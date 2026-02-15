@@ -5,14 +5,10 @@ import { auth } from "@/auth";
 export async function DELETE(request, { params }) {
   try {
     const session = await auth();
-    // TEMPORARILY DISABLED FOR TESTING
-    /*
     if (!session?.user?.id) {
       return Response.json({ error: "Unauthorized" }, { status: 401 });
     }
-    */
-
-    const userId = session?.user?.id || "test-user";
+    const userId = session.user.id;
 
     await sql`DELETE FROM lists WHERE id = ${params.id} AND user_id = ${userId}`;
     return Response.json({ success: true });
@@ -26,14 +22,10 @@ export async function DELETE(request, { params }) {
 export async function PATCH(request, { params }) {
   try {
     const session = await auth();
-    // TEMPORARILY DISABLED FOR TESTING
-    /*
     if (!session?.user?.id) {
       return Response.json({ error: "Unauthorized" }, { status: 401 });
     }
-    */
-
-    const userId = session?.user?.id || "test-user";
+    const userId = session.user.id;
 
     const { name, description, rules } = await request.json();
     const [updated] = await sql`

@@ -543,12 +543,7 @@ Recommended verification flow after deployment:
 ## Testing Notes
 
 **Current Status:**
-Authentication is temporarily disabled for testing purposes. API routes use a fallback `"test-user"` ID. This should be re-enabled before production deployment by uncommenting the auth checks in:
-
-- `apps/web/src/app/api/lists/route.js`
-- `apps/web/src/app/api/lists/[id]/route.js`
-- `apps/web/src/app/api/lists/[id]/items/route.js`
-- `apps/web/src/app/api/process-input/route.js`
+Authentication is enabled. Unauthenticated users (when not in guest mode) are redirected to `/account/signin`. API routes require a valid session and return 401 for unauthenticated requests. Each user's data is isolated by `session.user.id` (JWT from the session cookie).
 
 ## Future Roadmap
 
