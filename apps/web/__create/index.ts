@@ -88,45 +88,51 @@ for (const method of ['post', 'put', 'patch'] as const) {
 if (process.env.AUTH_SECRET) {
   app.use(
     '*',
-    initAuthConfig((c) => ({
-      secret: c.env.AUTH_SECRET,
-      pages: {
-        signIn: '/account/signin',
-        signOut: '/account/logout',
-      },
-      skipCSRFCheck,
-      session: {
-        strategy: 'jwt',
-      },
-      callbacks: {
-        session({ session, token }) {
-          if (token.sub) {
-            session.user.id = token.sub;
-          }
-          return session;
+    initAuthConfig((c) => {
+      // #region agent log
+      fetch('http://127.0.0.1:7242/ingest/03154c9a-7d27-48e7-ae59-993be66d0c71',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({runId:'auth-flow-check',hypothesisId:'H2',location:'__create/index.ts:initAuthConfig',message:'auth config created',data:{hasAuthSecret:!!c.env.AUTH_SECRET,basePath:'/api/auth',hasAuthUrl:!!process.env.AUTH_URL,authUrlPath:(() => { try { return process.env.AUTH_URL ? new URL(process.env.AUTH_URL).pathname : null; } catch { return 'invalid-url'; } })(),hasGoogleEnv:!!process.env.GOOGLE_CLIENT_ID&&!!process.env.GOOGLE_CLIENT_SECRET},timestamp:Date.now()})}).catch(()=>{});
+      // #endregion
+      return ({
+        secret: c.env.AUTH_SECRET,
+        basePath: '/api/auth',
+        trustHost: true,
+        pages: {
+          signIn: '/account/signin',
+          signOut: '/account/logout',
         },
-      },
-      cookies: {
-        csrfToken: {
-          options: {
-            secure: true,
-            sameSite: 'none',
+        skipCSRFCheck,
+        session: {
+          strategy: 'jwt',
+        },
+        callbacks: {
+          session({ session, token }) {
+            if (token.sub) {
+              session.user.id = token.sub;
+            }
+            return session;
           },
         },
-        sessionToken: {
-          options: {
-            secure: true,
-            sameSite: 'none',
+        cookies: {
+          csrfToken: {
+            options: {
+              secure: true,
+              sameSite: 'none',
+            },
+          },
+          sessionToken: {
+            options: {
+              secure: true,
+              sameSite: 'none',
+            },
+          },
+          callbackUrl: {
+            options: {
+              secure: true,
+              sameSite: 'none',
+            },
           },
         },
-        callbackUrl: {
-          options: {
-            secure: true,
-            sameSite: 'none',
-          },
-        },
-      },
-      providers: [
+        providers: [
         Credentials({
           id: 'credentials-signin',
           name: 'Credentials Sign in',
@@ -142,6 +148,9 @@ if (process.env.AUTH_SECRET) {
           },
           authorize: async (credentials) => {
             const { email, password } = credentials;
+            // #region agent log
+            fetch('http://127.0.0.1:7242/ingest/03154c9a-7d27-48e7-ae59-993be66d0c71',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({runId:'auth-flow-check',hypothesisId:'H4',location:'__create/index.ts:credentials-signin.authorize',message:'signin authorize entry',data:{hasEmail:!!email,hasPassword:!!password,emailType:typeof email,passwordType:typeof password,emailLen:typeof email==='string'?email.length:null},timestamp:Date.now()})}).catch(()=>{});
+            // #endregion
             if (!email || !password) {
               return null;
             }
@@ -152,6 +161,9 @@ if (process.env.AUTH_SECRET) {
             // logic to verify if user exists
             const user = await adapter.getUserByEmail(email);
             if (!user) {
+              // #region agent log
+              fetch('http://127.0.0.1:7242/ingest/03154c9a-7d27-48e7-ae59-993be66d0c71',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({runId:'auth-flow-check',hypothesisId:'H4',location:'__create/index.ts:credentials-signin.authorize',message:'signin rejected user not found',data:{emailLen:email.length},timestamp:Date.now()})}).catch(()=>{});
+              // #endregion
               return null;
             }
             const matchingAccount = user.accounts.find(
@@ -159,15 +171,24 @@ if (process.env.AUTH_SECRET) {
             );
             const accountPassword = matchingAccount?.password;
             if (!accountPassword) {
+              // #region agent log
+              fetch('http://127.0.0.1:7242/ingest/03154c9a-7d27-48e7-ae59-993be66d0c71',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({runId:'auth-flow-check',hypothesisId:'H4',location:'__create/index.ts:credentials-signin.authorize',message:'signin rejected credentials account password missing',data:{hasMatchingCredentialsAccount:!!matchingAccount},timestamp:Date.now()})}).catch(()=>{});
+              // #endregion
               return null;
             }
 
             const isValid = await compare(password, accountPassword);
             if (!isValid) {
+              // #region agent log
+              fetch('http://127.0.0.1:7242/ingest/03154c9a-7d27-48e7-ae59-993be66d0c71',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({runId:'auth-flow-check',hypothesisId:'H4',location:'__create/index.ts:credentials-signin.authorize',message:'signin rejected password mismatch',data:{emailLen:email.length},timestamp:Date.now()})}).catch(()=>{});
+              // #endregion
               return null;
             }
 
             // return user object with the their profile data
+            // #region agent log
+            fetch('http://127.0.0.1:7242/ingest/03154c9a-7d27-48e7-ae59-993be66d0c71',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({runId:'auth-flow-check',hypothesisId:'H4',location:'__create/index.ts:credentials-signin.authorize',message:'signin authorize success',data:{hasUserId:!!user.id},timestamp:Date.now()})}).catch(()=>{});
+            // #endregion
             return user;
           },
         }),
@@ -188,6 +209,9 @@ if (process.env.AUTH_SECRET) {
           },
           authorize: async (credentials) => {
             const { email, password, name, image } = credentials;
+            // #region agent log
+            fetch('http://127.0.0.1:7242/ingest/03154c9a-7d27-48e7-ae59-993be66d0c71',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({runId:'auth-flow-check',hypothesisId:'H3',location:'__create/index.ts:credentials-signup.authorize',message:'signup authorize entry',data:{hasEmail:!!email,hasPassword:!!password,emailType:typeof email,passwordType:typeof password,emailLen:typeof email==='string'?email.length:null,hasName:typeof name==='string'&&name.length>0,hasImage:typeof image==='string'&&image.length>0},timestamp:Date.now()})}).catch(()=>{});
+            // #endregion
             if (!email || !password) {
               return null;
             }
@@ -214,6 +238,9 @@ if (process.env.AUTH_SECRET) {
                 providerAccountId: newUser.id,
                 provider: 'credentials',
               });
+              // #region agent log
+              fetch('http://127.0.0.1:7242/ingest/03154c9a-7d27-48e7-ae59-993be66d0c71',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({runId:'auth-flow-check',hypothesisId:'H3',location:'__create/index.ts:credentials-signup.authorize',message:'signup authorize success created and linked account',data:{hasNewUserId:!!newUser.id},timestamp:Date.now()})}).catch(()=>{});
+              // #endregion
               return newUser;
             }
             return null;
@@ -228,8 +255,9 @@ if (process.env.AUTH_SECRET) {
               }),
             ]
           : []),
-      ],
-    }))
+        ],
+      });
+    })
   );
 }
 app.all('/integrations/:path{.+}', async (c, next) => {
@@ -254,6 +282,9 @@ app.all('/integrations/:path{.+}', async (c, next) => {
 });
 
 app.use('/api/auth/*', async (c, next) => {
+  // #region agent log
+  fetch('http://127.0.0.1:7242/ingest/03154c9a-7d27-48e7-ae59-993be66d0c71',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({runId:'auth-flow-check',hypothesisId:'H1',location:'__create/index.ts:/api/auth middleware',message:'incoming auth route request',data:{path:c.req.path,method:c.req.method,isAuthAction:isAuthAction(c.req.path),hasAuthSecret:!!process.env.AUTH_SECRET,configBasePath:(() => { try { return c.get('authConfig')?.basePath ?? null; } catch { return 'missing-config'; } })(),authUrlPath:(() => { try { return process.env.AUTH_URL ? new URL(process.env.AUTH_URL).pathname : null; } catch { return 'invalid-url'; } })()},timestamp:Date.now()})}).catch(()=>{});
+  // #endregion
   if (isAuthAction(c.req.path)) {
     return authHandler()(c, next);
   }

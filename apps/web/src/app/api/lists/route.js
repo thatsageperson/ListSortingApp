@@ -28,6 +28,9 @@ export async function GET() {
 
     // Combine and return both
     const allLists = [...ownedLists, ...sharedLists];
+    // #region agent log
+    fetch('http://127.0.0.1:7242/ingest/03154c9a-7d27-48e7-ae59-993be66d0c71',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({runId:'auth-flow-check',hypothesisId:'H5',location:'api/lists/route.js:GET',message:'lists fetched for authenticated user',data:{hasUserId:!!userId,userIdLen:typeof userId==='string'?userId.length:null,ownedCount:ownedLists.length,sharedCount:sharedLists.length,totalCount:allLists.length},timestamp:Date.now()})}).catch(()=>{});
+    // #endregion
     return Response.json(allLists);
   } catch (error) {
     console.error(error);
