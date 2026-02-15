@@ -22,7 +22,6 @@ import {
 import './global.css';
 
 import { toPng } from 'html-to-image';
-import fetch from '@/__create/fetch';
 // @ts-ignore
 import { SessionProvider } from '@auth/create/react';
 import { useNavigate } from 'react-router';
@@ -36,10 +35,6 @@ import type { Route } from './+types/root';
 import { useDevServerHeartbeat } from '../__create/useDevServerHeartbeat';
 
 export const links = () => [];
-
-if (globalThis.window && globalThis.window !== undefined) {
-  globalThis.window.fetch = fetch;
-}
 
 const LoadFontsSSR = import.meta.env.SSR ? LoadFonts : null;
 if (import.meta.hot) {
@@ -436,6 +431,25 @@ export const useHandleScreenshotRequest = () => {
 
 /** Root layout: sandbox handshake, codegen, refresh, screenshot, navigation, and HTML shell. */
 export function Layout({ children }: { children: ReactNode }) {
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    let mounted = true;
+    import('@/__create/fetch')
+      .then(({ default: fetchWithHeaders }) => {
+        if (mounted) {
+          window.fetch = fetchWithHeaders as typeof window.fetch;
+        }
+      })
+      .catch(() => {
+        // Keep default fetch if the helper cannot be loaded.
+      });
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
   useHandshakeParent();
   useCodeGen();
   useRefresh();

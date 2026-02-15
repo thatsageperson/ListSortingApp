@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "start": "npm start --prefix apps/web",
-    "build": "cd apps/web && npm run build",
-    "build:web": "cd apps/web && npm ci && npm run build"
+    "build": "cd apps/web && npm run build && npm run check:server-build-cycle",
+    "build:web": "cd apps/web && npm ci && npm run build && npm run check:server-build-cycle"
   }
 }

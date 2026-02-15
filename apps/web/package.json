@@ -5,6 +5,7 @@
 	"scripts": {
 		"dev": "react-router dev",
 		"build": "NODE_OPTIONS='--max-old-space-size=4096' react-router build",
+		"check:server-build-cycle": "node scripts/check-server-build-cycle.mjs",
 		"start": "node build/server/index.js",
 		"typecheck": "react-router typecheck && tsc --noEmit"
 	},
