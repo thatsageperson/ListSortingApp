@@ -121,9 +121,9 @@ export function ChatInput({ message, setMessage, onSend, isPending }) {
             className="mb-2 mr-2 w-12 h-12 bg-orange-sunset rounded-2xl flex items-center justify-center text-white transition-all hover:scale-105 active:scale-95 disabled:opacity-50 disabled:scale-100"
           >
             {isPending ? (
-              <Loader2 className="animate-spin" size={20} />
+              <Loader2 className="animate-spin text-white" size={20} />
             ) : (
-              <Navigation size={20} className="rotate-45" />
+              <Navigation size={20} color="white" className="rotate-45" />
             )}
           </button>
         </div>
