@@ -48,13 +48,24 @@ export async function GET(request, { params }) {
         "X-APPLE-CALENDAR-COLOR:#219079",
         ...items.map((item) => {
           const uid = `smartlists-${list.id}-${item.id}@smartlists.app`;
+          const dtstamp = `${new Date(item.created_at).toISOString().replace(/[-:]/g, "").split(".")[0]}Z`;
+          if (item.type === "note") {
+            return [
+              "BEGIN:VJOURNAL",
+              `UID:${uid}`,
+              `SUMMARY:${item.content}`,
+              `DESCRIPTION:${(item.notes || "").replace(/\n/g, "\\n")}`,
+              `DTSTAMP:${dtstamp}`,
+              "END:VJOURNAL",
+            ].join("\r\n");
+          }
           return [
             "BEGIN:VTODO",
             `UID:${uid}`,
             `SUMMARY:${item.content}`,
             `STATUS:${item.completed ? "COMPLETED" : "NEEDS-ACTION"}`,
             `PRIORITY:${item.priority === "high" ? "1" : item.priority === "medium" ? "5" : "9"}`,
-            `DTSTAMP:${new Date(item.created_at).toISOString().replace(/[-:]/g, "").split(".")[0]}Z`,
+            `DTSTAMP:${dtstamp}`,
             "END:VTODO",
           ].join("\r\n");
         }),
@@ -76,6 +87,10 @@ export async function GET(request, { params }) {
         "=".repeat(list.name.length),
         "",
         ...items.map((item) => {
+          if (item.type === "note") {
+            const body = item.notes ? `\n  ${item.notes.replace(/\n/g, "\n  ")}` : "";
+            return `[NOTE] ${item.content}${body}`;
+          }
           const checkbox = item.completed ? "[x]" : "[ ]";
           const priority = item.priority
             ? `[${item.priority.toUpperCase()}]`

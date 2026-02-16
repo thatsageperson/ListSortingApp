@@ -1,14 +1,16 @@
 import { useState, useRef, useEffect } from "react";
-import { Check, Trash2, Clock, Circle, MoreVertical } from "lucide-react";
+import { Check, Trash2, Clock, Circle, MoreVertical, FileText, Pin } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { formatDistanceToNow, format, isToday, isYesterday } from "date-fns";
 import { useCompletionEffects } from "@/hooks/useCompletionEffects";
+import { extractPlainText } from "@/utils/extractPlainText";
 
 const DISPLAY_MODES = [
   { value: "todo-strike", label: "Task (Strikethrough)" },
   { value: "todo-no-strike", label: "Task (No Strikethrough)" },
   { value: "bullet", label: "Bullet Point" },
   { value: "log-clock", label: "Log (Clock)" },
+  { value: "note", label: "Note" },
 ];
 
 /**
@@ -20,7 +22,7 @@ const DENSITY_PADDING = {
   spacious: "p-6",
 };
 
-export function ListItem({ item, onUpdate, onDelete, density = "comfortable" }) {
+export function ListItem({ item, onUpdate, onDelete, onNoteClick, density = "comfortable" }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [animating, setAnimating] = useState(false);
   const menuRef = useRef(null);
@@ -28,9 +30,10 @@ export function ListItem({ item, onUpdate, onDelete, density = "comfortable" }) 
 
   const { triggerCompletion, animationEnabled } = useCompletionEffects();
 
-  const mode = item.display_mode || (item.type === "log" ? "log-clock" : "todo-strike");
+  const mode = item.display_mode || (item.type === "note" ? "note" : item.type === "log" ? "log-clock" : "todo-strike");
   const showCheckbox = mode === "todo-strike" || mode === "todo-no-strike";
   const isStrikethrough = mode === "todo-strike" && item.completed;
+  const isNote = mode === "note";
 
   // Detect false → true transition for completion effects
   useEffect(() => {
@@ -77,6 +80,13 @@ export function ListItem({ item, onUpdate, onDelete, density = "comfortable" }) 
   };
 
   const renderIcon = () => {
+    if (isNote) {
+      return (
+        <div className="w-6 h-6 flex items-center justify-center shrink-0 mt-0.5">
+          <FileText size={16} className="text-amber-600" />
+        </div>
+      );
+    }
     if (mode === "log-clock") {
       return (
         <div className="w-6 h-6 flex items-center justify-center shrink-0 mt-0.5">
@@ -131,21 +141,43 @@ export function ListItem({ item, onUpdate, onDelete, density = "comfortable" }) 
     );
   };
 
+  const notePreview = isNote
+    ? (item.rich_content ? extractPlainText(item.rich_content) : item.notes) || ""
+    : null;
+
+  const handleContentClick = () => {
+    if (isNote && onNoteClick) {
+      onNoteClick(item);
+    }
+  };
+
   return (
-    <div className={`bg-white dark:bg-slate-surface ${DENSITY_PADDING[density] || "p-4"} rounded-2xl border border-gray-100 dark:border-slate-700 flex items-start justify-between group`}>
-      <div className="flex items-start gap-3 flex-1">
+    <div className={`bg-white dark:bg-slate-surface ${DENSITY_PADDING[density] || "p-4"} rounded-2xl border border-gray-100 dark:border-slate-700 flex items-start justify-between group ${item.is_pinned ? "ring-1 ring-teal-200 dark:ring-teal-800" : ""}`}>
+      <div className="flex items-start gap-3 flex-1 min-w-0">
         {renderIcon()}
-        <div className="flex-1 min-w-0">
-          <span
-            className={`text-charcoal dark:text-white block ${isStrikethrough ? "line-through opacity-50" : ""}`}
-          >
-            {item.content}
-          </span>
-          {item.notes && (
+        <div
+          className={`flex-1 min-w-0 ${isNote ? "cursor-pointer" : ""}`}
+          onClick={handleContentClick}
+        >
+          <div className="flex items-center gap-1.5">
+            {item.is_pinned && (
+              <Pin size={12} className="text-teal-600 shrink-0" />
+            )}
+            <span
+              className={`text-charcoal dark:text-white block ${isStrikethrough ? "line-through opacity-50" : ""}`}
+            >
+              {item.content}
+            </span>
+          </div>
+          {isNote && notePreview ? (
+            <span className="text-sm text-gray-500 dark:text-gray-400 block mt-0.5 line-clamp-2">
+              {notePreview}
+            </span>
+          ) : item.notes && !isNote ? (
             <span className="text-sm text-gray-500 dark:text-gray-400 block mt-0.5">
               {item.notes}
             </span>
-          )}
+          ) : null}
           <div className="flex items-center gap-2 mt-1">
             {item.priority && (
               <span
@@ -172,6 +204,16 @@ export function ListItem({ item, onUpdate, onDelete, density = "comfortable" }) 
           </button>
           {menuOpen && (
             <div className="absolute right-0 top-8 bg-white dark:bg-slate-surface border border-gray-100 dark:border-slate-700 rounded-xl shadow-lg z-10 py-1 w-52">
+              <button
+                onClick={() => {
+                  onUpdate({ itemId: item.id, is_pinned: !item.is_pinned });
+                  setMenuOpen(false);
+                }}
+                className="w-full text-left px-4 py-2 text-sm hover:bg-cream dark:hover:bg-slate-800 transition-colors text-charcoal dark:text-white"
+              >
+                {item.is_pinned ? "Unpin" : "Pin to Top"}
+              </button>
+              <div className="border-t border-gray-100 dark:border-slate-700 my-1" />
               {DISPLAY_MODES.map((opt) => (
                 <button
                   key={opt.value}

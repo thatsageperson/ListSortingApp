@@ -68,6 +68,9 @@ CREATE TABLE IF NOT EXISTS list_items (
   completed BOOLEAN DEFAULT false,
   type TEXT DEFAULT 'task',
   display_mode TEXT DEFAULT 'todo-strike',
+  rich_content JSONB,
+  is_pinned BOOLEAN DEFAULT false,
+  pinned_at TIMESTAMP,
   created_at TIMESTAMP DEFAULT NOW(),
   search_vector tsvector
 );
@@ -90,6 +93,7 @@ CREATE INDEX IF NOT EXISTS idx_lists_user_id ON lists(user_id);
 CREATE INDEX IF NOT EXISTS idx_list_items_list_id ON list_items(list_id);
 CREATE INDEX IF NOT EXISTS idx_list_shares_list_id ON list_shares(list_id);
 CREATE INDEX IF NOT EXISTS idx_list_shares_shared_with ON list_shares(shared_with_user_id);
+CREATE INDEX IF NOT EXISTS idx_list_items_pinned ON list_items(list_id, is_pinned DESC, pinned_at DESC);
 CREATE INDEX IF NOT EXISTS idx_auth_sessions_session_token ON auth_sessions("sessionToken");
 CREATE INDEX IF NOT EXISTS idx_auth_accounts_user_id ON auth_accounts("userId");
 
@@ -123,5 +127,5 @@ $$ LANGUAGE plpgsql;
 
 DROP TRIGGER IF EXISTS list_items_search_vector_trigger ON list_items;
 CREATE TRIGGER list_items_search_vector_trigger
-  BEFORE INSERT OR UPDATE OF content, notes ON list_items
+  BEFORE INSERT OR UPDATE OF content, notes, rich_content ON list_items
   FOR EACH ROW EXECUTE FUNCTION list_items_search_vector_update();

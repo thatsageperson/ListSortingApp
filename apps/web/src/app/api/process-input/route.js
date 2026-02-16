@@ -52,8 +52,8 @@ export async function POST(request) {
       Your task:
       1. Break down the user input into individual items.
       2. For each item, decide which list it belongs to based on the rules and list names.
-      3. Detect if this is a LOG ENTRY (past event that happened, e.g. "I walked the dog at 8pm", "took a shit", "went to gym yesterday") or a TASK (future todo, e.g. "walk the dog", "need to go to gym").
-      4. Set type to "log" for log entries or "task" for tasks.
+      3. Detect if this is a LOG ENTRY (past event that happened, e.g. "I walked the dog at 8pm", "took a shit", "went to gym yesterday"), a TASK (future todo, e.g. "walk the dog", "need to go to gym"), or a NOTE (reference info, ideas, thoughts, recipes, meeting notes, e.g. "note: meeting at 3pm room 204", "recipe for pasta", "idea for the project").
+      4. Set type to "log" for log entries, "task" for tasks, or "note" for notes.
       5. Separate the core action into "content" (short label) and any extra details into "notes". The content should be a clean, short label. The notes should capture additional context, details, or descriptions. Set notes to null if there are no extra details.
       6. For LOG ENTRIES: set completed to false. Extract any mentioned timestamp and return it as an ISO 8601 string relative to the current time. If no time is mentioned, use the current time.
       7. For TASKS: set completed to false, keep as future action, set timestamp to null.
@@ -62,8 +62,9 @@ export async function POST(request) {
       10. Detect the user's desired formatting style and set display_mode accordingly:
           - "todo-strike": Default for tasks. Also when user says "checklist", "check off", or "to-do".
           - "todo-no-strike": When user says "don't cross out" or "just a checkbox".
-          - "bullet": When user says "bullet point", "list item", or "note".
+          - "bullet": When user says "bullet point", "list item".
           - "log-clock": Default for log entries. Also when user says "record this", "logged", or "timestamp".
+          - "note": When user says "note", "jot down", "remember this", or provides reference info, ideas, recipes, meeting notes.
 
       Examples (assuming current time is ${now}):
       - "I walked the dog at 8am, it peed and pooped" → type: "log", content: "Dog walk", notes: "Peed and pooped", display_mode: "log-clock", timestamp: "<today at 8am ISO>"
@@ -73,6 +74,9 @@ export async function POST(request) {
       - "Add a bullet point for 'Buy milk'" → type: "task", content: "Buy milk", notes: null, display_mode: "bullet", timestamp: null
       - "Record that I finished the report at 2pm" → type: "log", content: "Finished report", notes: null, display_mode: "log-clock", timestamp: "<today at 2pm ISO>"
       - "Checklist item: Clean the kitchen" → type: "task", content: "Clean the kitchen", notes: null, display_mode: "todo-strike", timestamp: null
+      - "note: meeting at 3pm, room 204" → type: "note", content: "Meeting at 3pm", notes: "Room 204", display_mode: "note", timestamp: null
+      - "recipe for banana bread: 3 bananas, 1 cup sugar, butter" → type: "note", content: "Banana bread recipe", notes: "3 bananas, 1 cup sugar, butter", display_mode: "note", timestamp: null
+      - "idea: build a garden planter from pallets" → type: "note", content: "Build garden planter from pallets", notes: null, display_mode: "note", timestamp: null
 
       Respond with ONLY a JSON object containing an 'items' array.
     `;
@@ -112,10 +116,10 @@ export async function POST(request) {
                         listId: { type: ["integer", "null"] },
                         priority: { type: ["string", "null"] },
                         completed: { type: "boolean" },
-                        type: { type: "string", enum: ["task", "log"] },
+                        type: { type: "string", enum: ["task", "log", "note"] },
                         timestamp: { type: ["string", "null"] },
                         notes: { type: ["string", "null"] },
-                        display_mode: { type: "string", enum: ["todo-strike", "todo-no-strike", "bullet", "log-clock"] },
+                        display_mode: { type: "string", enum: ["todo-strike", "todo-no-strike", "bullet", "log-clock", "note"] },
                       },
                       required: ["content", "listId", "priority", "completed", "type", "timestamp", "notes", "display_mode"],
                       additionalProperties: false,
