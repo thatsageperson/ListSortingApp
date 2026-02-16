@@ -493,7 +493,7 @@ export function Layout({ children }: { children: ReactNode }) {
         <Meta />
         <Links />
         <script type="module" src="/src/__create/dev-error-overlay.js"></script>
-        <link rel="icon" type="image/svg+xml" href="/jot-logo-primary.svg" />
+        <link rel="icon" type="image/svg+xml" href="/jot-app-icon.svg" />
         <link rel="apple-touch-icon" href="/jot-app-icon.svg" />
         {LoadFontsSSR ? <LoadFontsSSR /> : null}
       </head>
