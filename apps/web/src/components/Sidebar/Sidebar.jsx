@@ -6,7 +6,6 @@ import {
   Home,
   HelpCircle,
   X,
-  BrainCircuit,
   Loader2,
   Moon,
   Sun,

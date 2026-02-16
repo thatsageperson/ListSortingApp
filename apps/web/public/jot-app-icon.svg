@@ -1,5 +1,16 @@
-<svg width="1024" height="1024" viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="1024" height="1024" rx="220" fill="#0F766E"/>
-  <text x="290" y="600" fill="#FFFBEB" font-family="Lora, serif" font-weight="500" font-size="360">j</text>
-  <circle cx="622" cy="592" r="52" fill="#FB923C"/>
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Lora:wght@500&amp;display=swap');
+    </style>
+  </defs>
+  
+  <!-- Background - Deep Teal with rounded corners -->
+  <rect width="512" height="512" fill="#0F766E" rx="100"/>
+  
+  <!-- Letter "j" in cream -->
+  <text x="110" y="395" font-family="'Lora', serif" font-size="360" font-weight="500" fill="#FFFBEB">j</text>
+  
+  <!-- Period in Sunset Orange -->
+  <circle cx="395" cy="355" r="45" fill="#FB923C"/>
 </svg>

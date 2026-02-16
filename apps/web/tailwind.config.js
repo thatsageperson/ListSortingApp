@@ -29,7 +29,7 @@ module.exports = {
 			},
 			fontFamily: {
 				logo: ['Lora', 'serif'],
-				sans: ['Plus Jakarta Sans', 'sans-serif'],
+				sans: ['Lora', 'serif'],
 			},
 		},
 	},
