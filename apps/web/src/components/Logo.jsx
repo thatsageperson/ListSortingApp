@@ -16,7 +16,7 @@ export function Logo({ size = "medium", variant = "default", className = "" }) {
   };
 
   return (
-    <div className={`font-logo font-medium leading-none ${sizes[size]} ${className}`}>
+    <div className={`logo-wordmark font-medium leading-none ${sizes[size]} ${className}`}>
       <span className={variants[variant]}>jot</span>
       <span className="text-orange-sunset">.</span>
     </div>

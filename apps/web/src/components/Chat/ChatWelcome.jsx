@@ -1,5 +1,3 @@
-import { Logo } from "@/components/Logo";
-
 /**
  * Welcome screen shown when no chat messages exist.
  */
@@ -11,7 +9,6 @@ export function ChatWelcome() {
         alt=""
         className="w-16 h-16 mb-6 rounded-2xl object-contain"
       />
-      <Logo size="small" className="mb-4" />
       <p className="text-gray-500 text-center mb-3 max-w-md">
         Type in tasks, groceries, ideas, or anything else. I'll automatically
         sort them into your lists.
