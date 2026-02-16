@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { View, Text, TouchableOpacity, Modal, Pressable, StyleSheet } from 'react-native';
 import { Check, Trash2, Clock, Circle, MoreVertical } from 'lucide-react-native';
+import { MotiView, AnimatePresence } from 'moti';
 import { formatDistanceToNow, format, isToday, isYesterday } from 'date-fns';
+import { useCompletionEffects } from '../hooks/useCompletionEffects';
 
 const DISPLAY_MODES = [
   { value: 'todo-strike', label: 'Task (Strikethrough)' },
@@ -26,21 +28,64 @@ const formatTimestamp = (date) => {
 
 export function ListItem({ item, onUpdate, onDelete }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [animating, setAnimating] = useState(false);
+  const prevCompletedRef = useRef(item.completed);
+
+  const { triggerCompletion, animationEnabled } = useCompletionEffects();
+
   const mode = item.display_mode || (item.type === 'log' ? 'log-clock' : 'todo-strike');
   const showCheckbox = mode === 'todo-strike' || mode === 'todo-no-strike';
   const isStrikethrough = mode === 'todo-strike' && item.completed;
   const priority = getPriorityStyle(item.priority);
 
+  // Detect false → true transition for completion effects
+  useEffect(() => {
+    if (item.completed && !prevCompletedRef.current) {
+      triggerCompletion();
+      if (animationEnabled) {
+        setAnimating(true);
+        const timer = setTimeout(() => setAnimating(false), 500);
+        return () => clearTimeout(timer);
+      }
+    }
+    prevCompletedRef.current = item.completed;
+  }, [item.completed, triggerCompletion, animationEnabled]);
+
   const renderIcon = () => {
     if (mode === 'log-clock') return <Clock size={16} color="#0F766E" />;
     if (mode === 'bullet') return <Circle size={8} color="#6B7280" fill="#6B7280" />;
     return (
-      <TouchableOpacity
-        onPress={() => onUpdate({ itemId: item.id, completed: !item.completed })}
-        style={[styles.checkbox, item.completed && styles.checkboxChecked]}
-      >
-        {item.completed && <Check size={14} color="#fff" />}
-      </TouchableOpacity>
+      <View style={styles.checkboxContainer}>
+        {/* Green flash ring on completion */}
+        <AnimatePresence>
+          {animating && (
+            <MotiView
+              from={{ scale: 1, opacity: 0.6 }}
+              animate={{ scale: 2.2, opacity: 0 }}
+              exit={{ opacity: 0 }}
+              transition={{ type: 'timing', duration: 400 }}
+              style={styles.flashRing}
+            />
+          )}
+        </AnimatePresence>
+
+        {/* Bouncing checkbox */}
+        <MotiView
+          animate={{ scale: animating ? [1, 1.4, 0.9, 1.05, 1] : 1 }}
+          transition={
+            animating
+              ? { type: 'timing', duration: 400 }
+              : { type: 'timing', duration: 100 }
+          }
+        >
+          <TouchableOpacity
+            onPress={() => onUpdate({ itemId: item.id, completed: !item.completed })}
+            style={[styles.checkbox, item.completed && styles.checkboxChecked]}
+          >
+            {item.completed && <Check size={14} color="#fff" />}
+          </TouchableOpacity>
+        </MotiView>
+      </View>
     );
   };
 
@@ -107,6 +152,20 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   iconCol: { width: 28, alignItems: 'center', marginTop: 2 },
+  checkboxContainer: {
+    position: 'relative',
+    width: 24,
+    height: 24,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  flashRing: {
+    position: 'absolute',
+    width: 24,
+    height: 24,
+    borderRadius: 8,
+    backgroundColor: '#2DD4BF',
+  },
   checkbox: {
     width: 24,
     height: 24,

@@ -105,6 +105,29 @@ export function SettingsScreen() {
         />
       </SettingRow>
 
+      <SectionHeader>Completion Effects</SectionHeader>
+      <SettingRow label="Completion Sound">
+        <Switch
+          value={settings.completionSound}
+          onValueChange={(v) => updateSetting("completionSound", v)}
+          trackColor={{ true: "#0F766E" }}
+        />
+      </SettingRow>
+      <SettingRow label="Completion Animation">
+        <Switch
+          value={settings.completionAnimation}
+          onValueChange={(v) => updateSetting("completionAnimation", v)}
+          trackColor={{ true: "#0F766E" }}
+        />
+      </SettingRow>
+      <SettingRow label="Haptic Feedback">
+        <Switch
+          value={settings.completionHaptics}
+          onValueChange={(v) => updateSetting("completionHaptics", v)}
+          trackColor={{ true: "#0F766E" }}
+        />
+      </SettingRow>
+
       <SectionHeader>Export</SectionHeader>
       <SettingRow label="Default Format">
         <SettingPicker

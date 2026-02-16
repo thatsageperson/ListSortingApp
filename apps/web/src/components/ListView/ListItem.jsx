@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import { Check, Trash2, Clock, Circle, MoreVertical } from "lucide-react";
+import { motion, AnimatePresence } from "motion/react";
 import { formatDistanceToNow, format, isToday, isYesterday } from "date-fns";
+import { useCompletionEffects } from "@/hooks/useCompletionEffects";
 
 const DISPLAY_MODES = [
   { value: "todo-strike", label: "Task (Strikethrough)" },
@@ -20,11 +22,28 @@ const DENSITY_PADDING = {
 
 export function ListItem({ item, onUpdate, onDelete, density = "comfortable" }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [animating, setAnimating] = useState(false);
   const menuRef = useRef(null);
+  const prevCompletedRef = useRef(item.completed);
+
+  const { triggerCompletion, animationEnabled } = useCompletionEffects();
 
   const mode = item.display_mode || (item.type === "log" ? "log-clock" : "todo-strike");
   const showCheckbox = mode === "todo-strike" || mode === "todo-no-strike";
   const isStrikethrough = mode === "todo-strike" && item.completed;
+
+  // Detect false → true transition for completion effects
+  useEffect(() => {
+    if (item.completed && !prevCompletedRef.current) {
+      triggerCompletion();
+      if (animationEnabled) {
+        setAnimating(true);
+        const timer = setTimeout(() => setAnimating(false), 500);
+        return () => clearTimeout(timer);
+      }
+    }
+    prevCompletedRef.current = item.completed;
+  }, [item.completed, triggerCompletion, animationEnabled]);
 
   useEffect(() => {
     const handleClick = (e) => {
@@ -72,18 +91,43 @@ export function ListItem({ item, onUpdate, onDelete, density = "comfortable" }) 
         </div>
       );
     }
-    // todo-strike or todo-no-strike
+    // todo-strike or todo-no-strike — animated checkbox
     return (
-      <button
-        onClick={() => onUpdate({ itemId: item.id, completed: !item.completed })}
-        className={`w-6 h-6 rounded-lg border-2 flex items-center justify-center transition-all shrink-0 mt-0.5 ${
-          item.completed
-            ? "bg-teal-700 border-teal-700"
-            : "border-gray-200 dark:border-slate-700 hover:border-teal-700"
-        }`}
-      >
-        {item.completed && <Check size={14} className="text-white" />}
-      </button>
+      <div className="relative w-6 h-6 shrink-0 mt-0.5">
+        {/* Green flash ring on completion */}
+        <AnimatePresence>
+          {animating && (
+            <motion.div
+              className="absolute inset-0 rounded-lg bg-teal-400"
+              initial={{ scale: 1, opacity: 0.6 }}
+              animate={{ scale: 2, opacity: 0 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.4, ease: "easeOut" }}
+            />
+          )}
+        </AnimatePresence>
+
+        <motion.button
+          onClick={() => onUpdate({ itemId: item.id, completed: !item.completed })}
+          className={`relative z-10 w-6 h-6 rounded-lg border-2 flex items-center justify-center transition-colors shrink-0 ${
+            item.completed
+              ? "bg-teal-700 border-teal-700"
+              : "border-gray-200 dark:border-slate-700 hover:border-teal-700"
+          }`}
+          animate={
+            animating
+              ? { scale: [1, 1.4, 0.9, 1.05, 1] }
+              : { scale: 1 }
+          }
+          transition={
+            animating
+              ? { type: "spring", stiffness: 500, damping: 15, duration: 0.4 }
+              : { duration: 0.1 }
+          }
+        >
+          {item.completed && <Check size={14} className="text-white" />}
+        </motion.button>
+      </div>
     );
   };
 

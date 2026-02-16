@@ -11,6 +11,9 @@ const DEFAULT_SETTINGS = {
   defaultSort: "created",
   lastExportFormat: "text",
   exportIncludeCompleted: true,
+  completionSound: true,
+  completionAnimation: true,
+  completionHaptics: true,
 };
 
 async function getGuestSettings() {

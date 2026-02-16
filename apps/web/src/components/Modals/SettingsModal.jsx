@@ -156,6 +156,20 @@ export function SettingsModal({ isOpen, onClose }) {
             />
           </SettingRow>
 
+          <SectionHeader>Completion Effects</SectionHeader>
+          <SettingRow label="Completion Sound">
+            <Toggle
+              checked={settings.completionSound}
+              onChange={(v) => updateSetting("completionSound", v)}
+            />
+          </SettingRow>
+          <SettingRow label="Completion Animation">
+            <Toggle
+              checked={settings.completionAnimation}
+              onChange={(v) => updateSetting("completionAnimation", v)}
+            />
+          </SettingRow>
+
           <SectionHeader>Export</SectionHeader>
           <SettingRow label="Default Export Format">
             <Select
