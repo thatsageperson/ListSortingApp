@@ -66,13 +66,20 @@ export default function JotPage() {
   // Check for guest mode on mount, and clear it if user is authenticated
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const guestModeSet = localStorage.getItem("guestMode") === "true";
+      const sessionGuest = sessionStorage.getItem("guestMode") === "true";
+      const localGuest = localStorage.getItem("guestMode") === "true";
+      const guestModeSet = sessionGuest || localGuest;
       
       // If guest mode is set but user is authenticated, clear the flag
       if (guestModeSet && user) {
+        sessionStorage.removeItem("guestMode");
         localStorage.removeItem("guestMode");
         setIsGuestMode(false);
       } else {
+        // Migrate legacy localStorage guest flag to sessionStorage.
+        if (!sessionGuest && localGuest) {
+          sessionStorage.setItem("guestMode", "true");
+        }
         setIsGuestMode(guestModeSet);
       }
     }
@@ -232,7 +239,7 @@ export default function JotPage() {
 
   if (!user && !isGuestMode) {
     if (typeof window !== "undefined") {
-      window.location.href = "/account/signin";
+      window.location.href = "/welcome";
     }
     return null;
   }

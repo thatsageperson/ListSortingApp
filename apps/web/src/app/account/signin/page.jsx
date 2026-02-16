@@ -51,6 +51,7 @@ export default function SignInPage() {
     try {
       // Clear guest mode before authentication redirect
       if (typeof window !== "undefined") {
+        sessionStorage.removeItem("guestMode");
         localStorage.removeItem("guestMode");
       }
       
@@ -98,6 +99,7 @@ export default function SignInPage() {
     try {
       // Clear guest mode before OAuth redirect
       if (typeof window !== "undefined") {
+        sessionStorage.removeItem("guestMode");
         localStorage.removeItem("guestMode");
       }
       
@@ -112,6 +114,7 @@ export default function SignInPage() {
     try {
       // Clear guest mode before OAuth redirect
       if (typeof window !== "undefined") {
+        sessionStorage.removeItem("guestMode");
         localStorage.removeItem("guestMode");
       }
       
@@ -121,10 +124,11 @@ export default function SignInPage() {
     }
   };
 
-  /** Enables guest mode in localStorage and redirects to home. */
+  /** Enables guest mode for this browser session and redirects to home. */
   const handleGuestMode = () => {
     if (typeof window !== "undefined") {
-      localStorage.setItem("guestMode", "true");
+      sessionStorage.setItem("guestMode", "true");
+      localStorage.removeItem("guestMode");
       window.location.href = "/";
     }
   };

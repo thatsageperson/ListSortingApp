@@ -1,5 +1,4 @@
 import {
-  MessageSquare,
   List,
   Plus,
   Settings,
@@ -66,16 +65,7 @@ export function Sidebar({
         </button>
 
         <nav className="flex-1 space-y-1 overflow-y-auto">
-          <SidebarItem
-            icon={MessageSquare}
-            label="Add Items"
-            isActive={activeTab === "chat"}
-            onClick={() => {
-              setActiveTab("chat");
-              setSidebarOpen(false);
-            }}
-          />
-          <div className="pt-4 pb-2 px-4">
+          <div className="pb-2 px-4">
             <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">
               My Lists
             </span>

@@ -30,8 +30,10 @@ function setGuestSettings(settings) {
 export function useSettings() {
   const queryClient = useQueryClient();
   const { data: user } = useUser();
-  const isGuest =
-    typeof window !== "undefined" && localStorage.getItem("guestMode") === "true";
+  const isGuest = typeof window !== "undefined" && (
+    sessionStorage.getItem("guestMode") === "true" ||
+    localStorage.getItem("guestMode") === "true"
+  );
   const isLoggedIn = !!user && !isGuest;
 
   const { data: rawSettings = {} } = useQuery({

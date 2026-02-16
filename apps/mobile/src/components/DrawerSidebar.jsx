@@ -9,7 +9,7 @@ import {
   StyleSheet,
   Dimensions,
 } from 'react-native';
-import { X, Plus, MessageSquare, List, Home, LogOut, Trash2, Settings } from 'lucide-react-native';
+import { X, Plus, List, Home, LogOut, Trash2, Settings } from 'lucide-react-native';
 
 const DRAWER_WIDTH = 280;
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
@@ -60,16 +60,6 @@ export function DrawerSidebar({
         </TouchableOpacity>
 
         <ScrollView style={styles.scroll} showsVerticalScrollIndicator={false}>
-          <TouchableOpacity
-            style={[styles.navItem, activeTab === 'chat' && styles.navItemActive]}
-            onPress={() => nav('chat')}
-          >
-            <MessageSquare size={18} color={activeTab === 'chat' ? '#0F766E' : '#9CA3AF'} />
-            <Text style={[styles.navText, activeTab === 'chat' && styles.navTextActive]}>
-              Add Items
-            </Text>
-          </TouchableOpacity>
-
           <Text style={styles.sectionTitle}>MY LISTS</Text>
           {lists.map((list) => (
             <View key={list.id} style={styles.listRow}>

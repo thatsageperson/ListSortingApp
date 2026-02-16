@@ -51,6 +51,7 @@ export default function SignUpPage() {
     try {
       // Clear guest mode before authentication redirect
       if (typeof window !== "undefined") {
+        sessionStorage.removeItem("guestMode");
         localStorage.removeItem("guestMode");
       }
       
@@ -98,6 +99,7 @@ export default function SignUpPage() {
     try {
       // Clear guest mode before OAuth redirect
       if (typeof window !== "undefined") {
+        sessionStorage.removeItem("guestMode");
         localStorage.removeItem("guestMode");
       }
       
@@ -112,6 +114,7 @@ export default function SignUpPage() {
     try {
       // Clear guest mode before OAuth redirect
       if (typeof window !== "undefined") {
+        sessionStorage.removeItem("guestMode");
         localStorage.removeItem("guestMode");
       }
       
