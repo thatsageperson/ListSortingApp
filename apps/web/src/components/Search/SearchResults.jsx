@@ -39,7 +39,7 @@ export function SearchResults({
   const displayedCount = groupedResults.reduce((sum, g) => sum + g.items.length, 0);
 
   return (
-    <div className="overflow-y-auto max-h-[380px]">
+    <div className="overflow-y-auto max-h-[280px]">
       {/* Result count */}
       <div className="px-4 py-2 border-b border-gray-100 dark:border-slate-700">
         <span className="text-xs text-gray-500">

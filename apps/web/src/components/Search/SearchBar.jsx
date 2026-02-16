@@ -185,7 +185,7 @@ export function SearchBar({ setActiveTab, setSidebarOpen }) {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -4 }}
             transition={{ duration: 0.15 }}
-            className="absolute top-full mt-2 right-0 w-[340px] max-h-[420px] bg-white dark:bg-slate-surface border border-gray-200 dark:border-slate-700 rounded-2xl shadow-2xl overflow-hidden z-[70]"
+            className="absolute top-full mt-2 right-0 w-[340px] max-w-full max-h-[320px] bg-white dark:bg-slate-surface border border-gray-200 dark:border-slate-700 rounded-2xl shadow-2xl overflow-hidden z-[70]"
             role="listbox"
           >
             {query.trim().length >= 2 ? (
