@@ -65,7 +65,7 @@ export function Sidebar({
           <span>New List</span>
         </button>
 
-        <div className="mb-4 flex justify-end">
+        <div className="mb-4 w-full min-w-0 flex justify-end">
           <SearchBar setActiveTab={setActiveTab} setSidebarOpen={setSidebarOpen} />
         </div>
 

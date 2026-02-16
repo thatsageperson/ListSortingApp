@@ -129,7 +129,7 @@ export function SearchBar({ setActiveTab, setSidebarOpen }) {
         initial={{ width: 40, opacity: 0.8 }}
         animate={{ width: 280 }}
         transition={{ duration: 0.2, ease: "easeOut" }}
-        className="flex items-center bg-white dark:bg-slate-surface border border-gray-200 dark:border-slate-700 rounded-2xl overflow-hidden shadow-lg"
+        className="flex items-center max-w-full bg-white dark:bg-slate-surface border border-gray-200 dark:border-slate-700 rounded-2xl overflow-hidden shadow-lg"
       >
         <div className="pl-3 flex items-center shrink-0">
           {isSearching ? (
