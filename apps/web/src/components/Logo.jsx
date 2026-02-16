@@ -3,9 +3,10 @@
  */
 export function Logo({ size = "medium", variant = "default", className = "" }) {
   const sizes = {
-    small: "text-2xl",
-    medium: "text-4xl",
-    large: "text-6xl",
+    small: "text-4xl",
+    medium: "text-6xl",
+    large: "text-8xl",
+    xlarge: "text-9xl",
   };
 
   const variants = {

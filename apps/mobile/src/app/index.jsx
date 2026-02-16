@@ -64,10 +64,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
   },
   title: {
-    fontSize: 28,
+    fontSize: 48,
     fontWeight: '600',
     color: '#0F766E',
-    marginBottom: 8,
+    marginBottom: 16,
     textAlign: 'center',
   },
   subtitle: {

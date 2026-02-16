@@ -194,6 +194,6 @@ const styles = StyleSheet.create({
     borderBottomColor: '#F3F4F6',
   },
   menuBtn: { width: 40, height: 40, alignItems: 'center', justifyContent: 'center' },
-  headerTitle: { fontSize: 18, fontWeight: '700', color: '#1F2937', flex: 1, textAlign: 'center' },
+  headerTitle: { fontSize: 22, fontWeight: '700', color: '#1F2937', flex: 1, textAlign: 'center' },
   content: { flex: 1 },
 });

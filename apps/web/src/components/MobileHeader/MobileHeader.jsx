@@ -14,7 +14,7 @@ export function MobileHeader({ setSidebarOpen, darkMode, toggleDarkMode }) {
         >
           <Menu size={24} className="text-charcoal dark:text-white" />
         </button>
-        <Logo size="small" className="scale-75 origin-left" />
+        <Logo size="small" />
       </div>
       <button
         onClick={toggleDarkMode}

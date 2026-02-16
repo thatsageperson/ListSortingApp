@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 20,
   },
-  brand: { fontSize: 22, fontWeight: '800', color: '#0F766E' },
+  brand: { fontSize: 32, fontWeight: '800', color: '#0F766E' },
   newBtn: {
     flexDirection: 'row',
     alignItems: 'center',

@@ -37,13 +37,6 @@ export default function JotPage() {
   const [isGuestMode, setIsGuestMode] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
-  // Check for guest mode on mount
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      setIsGuestMode(localStorage.getItem("guestMode") === "true");
-    }
-  }, []);
-
   const { settings, updateSetting } = useSettings();
   const { darkMode, toggleDarkMode } = useDarkMode(settings.darkMode);
 
@@ -69,6 +62,21 @@ export default function JotPage() {
 
   // Get user first before using in queries
   const { data: user, loading: userLoading } = useUser();
+
+  // Check for guest mode on mount, and clear it if user is authenticated
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const guestModeSet = localStorage.getItem("guestMode") === "true";
+      
+      // If guest mode is set but user is authenticated, clear the flag
+      if (guestModeSet && user) {
+        localStorage.removeItem("guestMode");
+        setIsGuestMode(false);
+      } else {
+        setIsGuestMode(guestModeSet);
+      }
+    }
+  }, [user]); // Add 'user' as dependency so it re-runs when auth state changes
 
   // Queries (only run when guest mode or authenticated so we avoid 401s before redirect)
   const { data: lists = [], isLoading: isLoadingLists } = useQuery({
@@ -184,6 +192,23 @@ export default function JotPage() {
 
   /** Creates the new list with analyzed rules and closes the new-list modal. */
   const handleCreateList = () => {
+    if (isGuestMode) {
+      // Handle guest mode: save to localStorage
+      const newList = {
+        id: `guest-${Date.now()}`, // Unique ID for guest lists
+        name: newListName,
+        description: analyzedRules.description,
+        rules: analyzedRules.rules,
+        created_at: new Date().toISOString(),
+      };
+      const updatedLists = [...lists, newList];
+      localStorage.setItem("guestLists", JSON.stringify(updatedLists));
+      queryClient.setQueryData(["lists", isGuestMode], updatedLists);
+      closeNewListModal();
+      return; // Exit early - don't call API
+    }
+
+    // Handle authenticated users: save to database via API
     createListMutation.mutate(
       {
         name: newListName,

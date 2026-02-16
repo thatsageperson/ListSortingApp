@@ -49,6 +49,11 @@ export default function SignUpPage() {
     }
 
     try {
+      // Clear guest mode before authentication redirect
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("guestMode");
+      }
+      
       await signUpWithCredentials({
         email,
         password,
@@ -91,6 +96,11 @@ export default function SignUpPage() {
       return;
     }
     try {
+      // Clear guest mode before OAuth redirect
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("guestMode");
+      }
+      
       await signIn("google", { callbackUrl: "/" });
     } catch (err) {
       setError("Google sign-up failed. Please try again.");
@@ -100,6 +110,11 @@ export default function SignUpPage() {
   /** Initiates Apple OAuth sign-up. */
   const handleAppleSignUp = async () => {
     try {
+      // Clear guest mode before OAuth redirect
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("guestMode");
+      }
+      
       await signIn("apple", { callbackUrl: "/" });
     } catch (err) {
       setError("Apple sign-up failed. Please try again.");
