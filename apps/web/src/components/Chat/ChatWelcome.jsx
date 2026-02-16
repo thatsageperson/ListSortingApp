@@ -10,10 +10,11 @@ export function ChatWelcome() {
         className="w-16 h-16 mb-6 rounded-2xl object-contain"
       />
       <p className="text-gray-500 text-center mb-3 max-w-md">
-        Type in tasks, groceries, ideas, or anything else. I'll automatically
-        sort them into your lists.
+        To get started, open the menu and create at least one list,
+        <br />
+        it's where all your jots will land.
       </p>
-      <h2 className="text-lg lg:text-xl font-semibold text-center text-charcoal dark:text-white mb-12">
+      <h2 className="text-xl lg:text-2xl font-extralight italic text-center text-charcoal dark:text-white mb-12 tracking-wider" style={{ fontFamily: 'var(--font-logo)' }}>
         What do you need to jot down?
       </h2>
     </div>

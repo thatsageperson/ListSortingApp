@@ -18,8 +18,7 @@ export function ChatWelcome() {
       </View>
       <Text style={styles.title}>What do you need to jot down?</Text>
       <Text style={styles.subtitle}>
-        Type in tasks, groceries, ideas, or anything else. I'll automatically sort them into your
-        lists.
+        To get started, open the menu and create at least one list,{'\n'}it's where all your jots will land.
       </Text>
     </View>
   );
@@ -40,6 +39,6 @@ const styles = StyleSheet.create({
     width: 64,
     height: 64,
   },
-  title: { fontSize: 26, fontWeight: '700', color: '#1F2937', textAlign: 'center', marginBottom: 8 },
+  title: { fontSize: 30, fontWeight: '200', fontStyle: 'italic', color: '#1F2937', textAlign: 'center', marginBottom: 8, fontFamily: 'Lora', letterSpacing: 1.2 },
   subtitle: { fontSize: 14, color: '#6B7280', textAlign: 'center', marginBottom: 24, maxWidth: 300 },
 });
