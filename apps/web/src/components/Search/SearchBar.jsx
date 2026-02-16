@@ -124,7 +124,7 @@ export function SearchBar({ setActiveTab, setSidebarOpen }) {
   }
 
   return (
-    <div ref={containerRef} className="relative">
+    <div ref={containerRef} className="relative w-full min-w-0">
       <motion.div
         initial={{ width: 40, opacity: 0.8 }}
         animate={{ width: 280 }}
