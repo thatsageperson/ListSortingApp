@@ -16,7 +16,7 @@ export function ChatWelcome() {
           accessibilityLabel="jot. logo"
         />
       </View>
-      <Text style={styles.title}>What can I organize for you?</Text>
+      <Text style={styles.title}>What do you need to jot down?</Text>
       <Text style={styles.subtitle}>
         Type in tasks, groceries, ideas, or anything else. I'll automatically sort them into your
         lists.

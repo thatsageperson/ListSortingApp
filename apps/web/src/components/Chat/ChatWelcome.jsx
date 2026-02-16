@@ -14,7 +14,7 @@ export function ChatWelcome() {
         sort them into your lists.
       </p>
       <h2 className="text-lg lg:text-xl font-semibold text-center text-charcoal dark:text-white mb-12">
-        What can I organize for you?
+        What do you need to jot down?
       </h2>
     </div>
   );
