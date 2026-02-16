@@ -41,6 +41,66 @@ const pool = new Pool({
 });
 const adapter = NeonAdapter(pool);
 
+async function ensureAuthTables() {
+  if (!process.env.DATABASE_URL) {
+    throw new Error('DATABASE_URL is required for auth');
+  }
+
+  const dbInfo = await pool.query<{
+    database_name: string;
+    schema_name: string;
+  }>(`SELECT current_database() AS database_name, current_schema() AS schema_name`);
+  const currentDb = dbInfo.rows[0];
+  console.info(
+    `[auth][db] connected to database="${currentDb.database_name}" schema="${currentDb.schema_name}"`
+  );
+
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS auth_verification_token (
+      identifier TEXT NOT NULL,
+      expires TIMESTAMPTZ NOT NULL,
+      token TEXT NOT NULL,
+      PRIMARY KEY (identifier, token)
+    );
+
+    CREATE TABLE IF NOT EXISTS auth_users (
+      id TEXT PRIMARY KEY,
+      name VARCHAR(255),
+      email VARCHAR(255),
+      "emailVerified" TIMESTAMPTZ,
+      image TEXT
+    );
+
+    CREATE TABLE IF NOT EXISTS auth_accounts (
+      id SERIAL PRIMARY KEY,
+      "userId" TEXT NOT NULL REFERENCES auth_users(id) ON DELETE CASCADE,
+      provider VARCHAR(255) NOT NULL,
+      type VARCHAR(255) NOT NULL,
+      "providerAccountId" VARCHAR(255) NOT NULL,
+      access_token TEXT,
+      expires_at BIGINT,
+      refresh_token TEXT,
+      id_token TEXT,
+      scope TEXT,
+      session_state TEXT,
+      token_type TEXT,
+      password TEXT
+    );
+
+    CREATE TABLE IF NOT EXISTS auth_sessions (
+      id SERIAL PRIMARY KEY,
+      "userId" TEXT NOT NULL REFERENCES auth_users(id) ON DELETE CASCADE,
+      expires TIMESTAMPTZ NOT NULL,
+      "sessionToken" VARCHAR(255) NOT NULL UNIQUE
+    );
+
+    CREATE INDEX IF NOT EXISTS idx_auth_sessions_session_token ON auth_sessions("sessionToken");
+    CREATE INDEX IF NOT EXISTS idx_auth_accounts_user_id ON auth_accounts("userId");
+  `);
+}
+
+await ensureAuthTables();
+
 const app = new Hono();
 
 app.use('*', requestId());

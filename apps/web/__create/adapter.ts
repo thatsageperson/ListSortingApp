@@ -66,13 +66,15 @@ export default function NeonAdapter(client: Pool): NeonAdapter {
 			return result.rowCount !== 0 ? result.rows[0] : null;
 		},
 
-		async createUser(user: Omit<AdapterUser, 'id'>) {
-			const { name, email, emailVerified, image } = user;
+		async createUser(user: AdapterUser) {
+			const { id, name, email, emailVerified, image } = user;
+			const userId = id ?? crypto.randomUUID();
 			const sql = `
-        INSERT INTO auth_users (name, email, "emailVerified", image)
-        VALUES ($1, $2, $3, $4)
+        INSERT INTO auth_users (id, name, email, "emailVerified", image)
+        VALUES ($1, $2, $3, $4, $5)
         RETURNING id, name, email, "emailVerified", image`;
 			const result = await client.query(sql, [
+				userId,
 				name,
 				email,
 				emailVerified,
