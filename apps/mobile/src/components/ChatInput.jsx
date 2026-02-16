@@ -1,7 +1,35 @@
-import { View, TextInput, TouchableOpacity, ActivityIndicator, StyleSheet } from 'react-native';
-import { Navigation } from 'lucide-react-native';
+import { useCallback, useRef } from 'react';
+import { View, Text, TextInput, TouchableOpacity, ActivityIndicator, StyleSheet } from 'react-native';
+import { Navigation, Mic, Square, X } from 'lucide-react-native';
+import { MotiView, AnimatePresence } from 'moti';
+import { useVoiceInput } from '../hooks/useVoiceInput';
 
 export function ChatInput({ message, setMessage, onSend, isPending }) {
+  const preVoiceMessageRef = useRef('');
+
+  const onTranscript = useCallback(
+    (text) => {
+      const prefix = preVoiceMessageRef.current;
+      setMessage(prefix ? `${prefix} ${text}` : text);
+    },
+    [setMessage],
+  );
+
+  const {
+    isListening,
+    isSupported,
+    error,
+    startListening: rawStart,
+    stopListening,
+    cancelListening,
+    isTranscribing,
+  } = useVoiceInput({ onTranscript });
+
+  const startListening = useCallback(() => {
+    preVoiceMessageRef.current = message;
+    rawStart();
+  }, [message, rawStart]);
+
   return (
     <View style={styles.container}>
       <View style={styles.inputRow}>
@@ -9,13 +37,67 @@ export function ChatInput({ message, setMessage, onSend, isPending }) {
           style={styles.input}
           value={message}
           onChangeText={setMessage}
-          placeholder="Milk, eggs, finish report, call Sarah..."
+          placeholder={isListening ? 'Listening...' : 'Milk, eggs, finish report, call Sarah...'}
           placeholderTextColor="#9CA3AF"
           multiline
-          editable={!isPending}
+          editable={!isPending && !isListening}
           onSubmitEditing={onSend}
           blurOnSubmit
         />
+
+        {/* Voice input button */}
+        {isSupported && (
+          <View style={styles.micContainer}>
+            {/* Pulsing ring animation while listening */}
+            <AnimatePresence>
+              {isListening && (
+                <MotiView
+                  from={{ scale: 1, opacity: 0.5 }}
+                  animate={{ scale: 1.5, opacity: 0 }}
+                  exit={{ opacity: 0 }}
+                  transition={{
+                    type: 'timing',
+                    duration: 1200,
+                    loop: true,
+                  }}
+                  style={styles.pulseRing}
+                />
+              )}
+            </AnimatePresence>
+
+            <TouchableOpacity
+              style={[
+                styles.micBtn,
+                isListening && styles.micBtnActive,
+                isPending && styles.sendBtnDisabled,
+              ]}
+              onPress={isListening ? stopListening : startListening}
+              disabled={isPending || isTranscribing}
+              activeOpacity={0.7}
+            >
+              {isTranscribing ? (
+                <ActivityIndicator size="small" color="#fff" />
+              ) : isListening ? (
+                <Square size={18} color="#fff" fill="#fff" />
+              ) : (
+                <Mic size={20} color="#fff" />
+              )}
+            </TouchableOpacity>
+
+            {/* Cancel button while listening */}
+            {isListening && (
+              <TouchableOpacity
+                style={styles.cancelBtn}
+                onPress={cancelListening}
+                activeOpacity={0.7}
+              >
+                <X size={10} color="#fff" />
+              </TouchableOpacity>
+            )}
+          </View>
+        )}
+
+        {/* Send button */}
         <TouchableOpacity
           style={[styles.sendBtn, (!message.trim() || isPending) && styles.sendBtnDisabled]}
           onPress={onSend}
@@ -29,6 +111,9 @@ export function ChatInput({ message, setMessage, onSend, isPending }) {
           )}
         </TouchableOpacity>
       </View>
+
+      {/* Error message */}
+      {error && <Text style={styles.errorText}>{error}</Text>}
     </View>
   );
 }
@@ -58,6 +143,42 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     maxHeight: 100,
   },
+  micContainer: {
+    position: 'relative',
+    marginRight: 6,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  micBtn: {
+    width: 44,
+    height: 44,
+    borderRadius: 16,
+    backgroundColor: '#0F766E',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  micBtnActive: {
+    backgroundColor: '#EF4444',
+  },
+  pulseRing: {
+    position: 'absolute',
+    width: 44,
+    height: 44,
+    borderRadius: 16,
+    backgroundColor: '#EF4444',
+  },
+  cancelBtn: {
+    position: 'absolute',
+    top: -6,
+    right: -6,
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    backgroundColor: '#6B7280',
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 10,
+  },
   sendBtn: {
     width: 44,
     height: 44,
@@ -67,4 +188,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   sendBtnDisabled: { opacity: 0.5 },
+  errorText: {
+    fontSize: 11,
+    color: '#EF4444',
+    textAlign: 'center',
+    marginTop: 8,
+  },
 });
