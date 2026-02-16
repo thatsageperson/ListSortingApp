@@ -1,10 +1,11 @@
 import { Menu, Moon, Sun } from "lucide-react";
 import { Logo } from "@/components/Logo";
+import { SearchBar } from "@/components/Search/SearchBar";
 
 /**
- * Mobile-only header with menu button to open the sidebar and dark mode toggle.
+ * Mobile-only header with menu button, search, and dark mode toggle.
  */
-export function MobileHeader({ setSidebarOpen, darkMode, toggleDarkMode }) {
+export function MobileHeader({ setSidebarOpen, darkMode, toggleDarkMode, setActiveTab }) {
   return (
     <div className="lg:hidden fixed top-0 left-0 right-0 bg-white dark:bg-slate-surface border-b border-gray-200 dark:border-slate-700 z-50 px-6 py-4 flex items-center justify-between">
       <div className="flex items-center">
@@ -16,16 +17,19 @@ export function MobileHeader({ setSidebarOpen, darkMode, toggleDarkMode }) {
         </button>
         <Logo size="small" />
       </div>
-      <button
-        onClick={toggleDarkMode}
-        className="p-2 hover:bg-cream dark:hover:bg-slate-800 rounded-2xl"
-      >
-        {darkMode ? (
-          <Sun size={20} className="text-white" />
-        ) : (
-          <Moon size={20} className="text-charcoal" />
-        )}
-      </button>
+      <div className="flex items-center gap-2">
+        <SearchBar setActiveTab={setActiveTab} setSidebarOpen={setSidebarOpen} />
+        <button
+          onClick={toggleDarkMode}
+          className="p-2 hover:bg-cream dark:hover:bg-slate-800 rounded-2xl"
+        >
+          {darkMode ? (
+            <Sun size={20} className="text-white" />
+          ) : (
+            <Moon size={20} className="text-charcoal" />
+          )}
+        </button>
+      </div>
     </div>
   );
 }

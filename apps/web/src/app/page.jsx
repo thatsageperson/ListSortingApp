@@ -250,6 +250,7 @@ export default function JotPage() {
         setSidebarOpen={setSidebarOpen}
         darkMode={darkMode}
         toggleDarkMode={toggleDarkMode}
+        setActiveTab={setActiveTab}
       />
 
       {/* Guest Mode Banner */}

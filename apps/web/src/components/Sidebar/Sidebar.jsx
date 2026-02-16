@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { SidebarItem } from "./SidebarItem";
 import { Logo } from "@/components/Logo";
+import { SearchBar } from "@/components/Search/SearchBar";
 
 /**
  * Left sidebar: branding, dark mode toggle, new list button, chat/list nav, and settings/sign out.
@@ -58,11 +59,15 @@ export function Sidebar({
 
         <button
           onClick={() => setIsNewListModalOpen(true)}
-          className="w-full flex items-center justify-center gap-2 bg-teal-700 hover:bg-teal-800 text-white py-3 rounded-2xl font-medium mb-6 transition-colors shadow-lg shadow-teal-700/20"
+          className="w-full flex items-center justify-center gap-2 bg-teal-700 hover:bg-teal-800 text-white py-3 rounded-2xl font-medium mb-4 transition-colors shadow-lg shadow-teal-700/20"
         >
           <Plus size={18} />
           <span>New List</span>
         </button>
+
+        <div className="mb-4 flex justify-end">
+          <SearchBar setActiveTab={setActiveTab} setSidebarOpen={setSidebarOpen} />
+        </div>
 
         <nav className="flex-1 space-y-1 overflow-y-auto">
           <div className="pb-2 px-4">
