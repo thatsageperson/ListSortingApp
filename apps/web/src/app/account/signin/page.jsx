@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useAuth from "@/utils/useAuth";
 import { Logo } from "@/components/Logo";
 
@@ -10,8 +10,31 @@ export default function SignInPage() {
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [googleEnabled, setGoogleEnabled] = useState(true);
 
   const { signInWithCredentials, signIn } = useAuth();
+
+  useEffect(() => {
+    let mounted = true;
+    const loadProviders = async () => {
+      try {
+        const response = await fetch("/api/auth/providers");
+        if (!response.ok) {
+          return;
+        }
+        const providers = await response.json();
+        if (mounted) {
+          setGoogleEnabled(Boolean(providers?.google));
+        }
+      } catch {
+        // Keep optimistic default when provider check fails.
+      }
+    };
+    loadProviders();
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   /** Submits email/password sign-in and handles errors. */
   const onSubmit = async (e) => {
@@ -61,6 +84,12 @@ export default function SignInPage() {
 
   /** Initiates Google OAuth sign-in. */
   const handleGoogleSignIn = async () => {
+    if (!googleEnabled) {
+      setError(
+        "Google sign-in is not configured yet. Add GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET in Railway env vars and whitelist /api/auth/callback/google in Google Cloud.",
+      );
+      return;
+    }
     try {
       await signIn("google", { callbackUrl: "/" });
     } catch (err) {
@@ -108,7 +137,8 @@ export default function SignInPage() {
             <button
               type="button"
               onClick={handleGoogleSignIn}
-              className="w-full flex items-center justify-center gap-3 rounded-2xl border-2 border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-3 text-base font-medium text-charcoal dark:text-white transition-all hover:bg-cream dark:hover:bg-slate-700"
+              disabled={!googleEnabled}
+              className="w-full flex items-center justify-center gap-3 rounded-2xl border-2 border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-3 text-base font-medium text-charcoal dark:text-white transition-all hover:bg-cream dark:hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <svg className="h-5 w-5" viewBox="0 0 24 24">
                 <path

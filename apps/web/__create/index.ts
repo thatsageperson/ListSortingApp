@@ -146,6 +146,25 @@ for (const method of ['post', 'put', 'patch'] as const) {
 }
 
 if (process.env.AUTH_SECRET) {
+  const hasGoogleOAuth =
+    Boolean(process.env.GOOGLE_CLIENT_ID) && Boolean(process.env.GOOGLE_CLIENT_SECRET);
+  const authUrl = process.env.AUTH_URL;
+  let authUrlPath: string | null = null;
+  try {
+    authUrlPath = authUrl ? new URL(authUrl).pathname : null;
+  } catch {
+    authUrlPath = 'invalid';
+  }
+
+  console.info(
+    `[auth][google] provider=${hasGoogleOAuth ? 'enabled' : 'disabled'} authUrlPath=${authUrlPath ?? '(unset)'} callbackPath=/api/auth/callback/google`
+  );
+  if (authUrlPath && authUrlPath !== '/' && authUrlPath !== '/api/auth') {
+    console.warn(
+      `[auth][google] AUTH_URL contains a path (${authUrlPath}). Usually AUTH_URL should be the site origin only (example: https://your-app.com).`
+    );
+  }
+
   app.use(
     '*',
     initAuthConfig((c) => {
